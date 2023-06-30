@@ -1,0 +1,153 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model roles {
+  id    String  @id
+  users users[]
+}
+
+model users {
+  id        String    @id @default(uuid())
+  name      String
+  username  String    @unique
+  email     String    @unique
+  password  String
+  roles     roles?    @relation(fields: [rolesId], references: [id])
+  rolesId   String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  students  students?
+  teachers  teachers?
+}
+
+model classes {
+  id       String     @id
+  students students[]
+}
+
+model departments {
+  id       String     @id @default(uuid())
+  name     String
+  students students[]
+}
+
+model students {
+  id            String      @id @default(uuid())
+  name          String
+  users         users       @relation(fields: [usersId], references: [id])
+  usersId       String      @unique
+  classes       classes     @relation(fields: [classesId], references: [id])
+  classesId     String
+  departments   departments @relation(fields: [departmentsId], references: [id])
+  departmentsId String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  results       results[]
+}
+
+model teachers {
+  id        String     @id @default(uuid())
+  name      String
+  users     users      @relation(fields: [usersId], references: [id])
+  usersId   String     @unique
+  subjects  subjects[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model subjects {
+  id                 String               @id @default(uuid())
+  name               String
+  teachers           teachers?            @relation(fields: [teachersId], references: [id])
+  teachersId         String?
+  learning_materials learning_materials[]
+  tasks              tasks[]
+  tests              tests[]
+}
+
+model learning_materials {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
+  file        String
+  subjects    subjects @relation(fields: [subjectsId], references: [id])
+  subjectsId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model tasks {
+  id           String         @id @default(uuid())
+  title        String
+  description  String         @db.Text
+  deadline     DateTime
+  file         String
+  subjects     subjects       @relation(fields: [subjectsId], references: [id])
+  subjectsId   String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  task_reports task_reports[]
+}
+
+model task_reports {
+  id        String   @id @default(uuid())
+  file      String
+  tasks     tasks    @relation(fields: [tasksId], references: [id])
+  tasksId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model tests {
+  id          String    @id @default(uuid())
+  title       String
+  description String    @db.Text
+  chances     Int
+  deadline    DateTime
+  subjects    subjects  @relation(fields: [subjectsId], references: [id])
+  subjectsId  String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  results     results[]
+}
+
+model questions {
+  id          String    @id @default(uuid())
+  title       String
+  image       String
+  description String    @db.Text
+  choices     choices[]
+}
+
+model choices {
+  id          String    @id @default(uuid())
+  name        String
+  isRight     Boolean
+  questions   questions @relation(fields: [questionsId], references: [id])
+  questionsId String
+}
+
+model results {
+  id         String   @id @default(uuid())
+  tests      tests    @relation(fields: [testsId], references: [id])
+  testsId    String
+  students   students @relation(fields: [studentsId], references: [id])
+  studentsId String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model result_details {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
