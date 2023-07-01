@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model quotes {
+  id     String @id @default(uuid())
+  quotes String @db.Text
+}
+
 model roles {
   id    String  @id
   users users[]
@@ -121,33 +126,43 @@ model tests {
 }
 
 model questions {
-  id          String    @id @default(uuid())
-  title       String
-  image       String
-  description String    @db.Text
-  choices     choices[]
+  id             String           @id @default(uuid())
+  title          String
+  image          String
+  description    String           @db.Text
+  choices        choices[]
+  result_details result_details[]
 }
 
 model choices {
-  id          String    @id @default(uuid())
-  name        String
-  isRight     Boolean
-  questions   questions @relation(fields: [questionsId], references: [id])
-  questionsId String
+  id             String           @id @default(uuid())
+  name           String
+  isRight        Boolean
+  questions      questions        @relation(fields: [questionsId], references: [id])
+  questionsId    String
+  result_details result_details[]
 }
 
 model results {
-  id         String   @id @default(uuid())
-  tests      tests    @relation(fields: [testsId], references: [id])
-  testsId    String
-  students   students @relation(fields: [studentsId], references: [id])
-  studentsId String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id             String           @id @default(uuid())
+  tests          tests            @relation(fields: [testsId], references: [id])
+  testsId        String
+  students       students         @relation(fields: [studentsId], references: [id])
+  studentsId     String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  result_details result_details[]
 }
 
 model result_details {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String    @id @default(uuid())
+  isRight     Boolean
+  results     results   @relation(fields: [resultsId], references: [id])
+  resultsId   String
+  questions   questions @relation(fields: [questionsId], references: [id])
+  questionsId String
+  choices     choices   @relation(fields: [choicesId], references: [id])
+  choicesId   String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
