@@ -45,6 +45,24 @@ async function main() {
             { quote: "Pendidikan adalah kunci untuk membuka dunia, paspor menuju kebebasan" },
         ]
     })
+
+    await prisma.department.createMany({
+        data: [
+            { name: "RPL" },
+            { name: "TKJ" },
+            { name: "OTKP" },
+            { name: "BDP" },
+            { name: "AKL" },
+        ]
+    })
+
+    await prisma.class.createMany({
+        data: [
+            { id: "x" },
+            { id: "xi" },
+            { id: "xii" },
+        ]
+    })
 }
 
 main()

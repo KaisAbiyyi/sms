@@ -36,6 +36,9 @@ export default function LoginForm(props: any) {
         }
         const req = await fetch(props.fetchTo, {
             method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify({
                 email, password, rememberMe
             })
@@ -86,7 +89,7 @@ export default function LoginForm(props: any) {
                         <span className="text-xs font-semibold text-red-500">{passwordErr}</span>
                     }
                     <button className='absolute right-4 text-slate-500' type='button' onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? <EyeOpen size="20" /> : <EyeClosed size="20" />}
+                        {showPassword ? <EyeClosed size="20" /> : <EyeOpen size="20" />}
 
                     </button>
                 </div>

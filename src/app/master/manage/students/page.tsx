@@ -8,7 +8,13 @@ export const metadata: Metadata = {
 
 export default async function MasterManageStudents() {
     const studentsCounted = await prisma.student.count()
-    const students = await prisma.student.findMany()
+    const students = await prisma.student.findMany({
+        include: {
+            User: true,
+            Class: true,
+            Department: true,
+        }
+    })
 
     return (
         <>
@@ -68,11 +74,11 @@ export default async function MasterManageStudents() {
                         <tbody>
                             {students.map((student) => (
                                 <tr>
-                                    <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">{student.studentNumber.toString()}</td>
+                                    <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">{student.studentNumber}</td>
                                     <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">{student.name}</td>
-                                    <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">asdf</td>
-                                    <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">asdf</td>
-                                    <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">asdf</td>
+                                    <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">{student.User.email}</td>
+                                    <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">{student.ClassId}</td>
+                                    <td className="p-2 text-sm border-b text-start border-slate-200 whitespace-nowrap">{student.Department.name}</td>
                                 </tr>
                             ))}
                         </tbody>

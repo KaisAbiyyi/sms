@@ -58,7 +58,7 @@ model Department {
 
 model Student {
   id            String     @id @default(uuid())
-  studentNumber BigInt     @unique
+  studentNumber String     @unique
   name          String
   User          User       @relation(fields: [UserId], references: [id])
   UserId        String     @unique

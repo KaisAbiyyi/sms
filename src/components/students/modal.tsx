@@ -5,11 +5,15 @@ import DownloadIcon from "../icons/DownloadIcon"
 import CircleX from "../icons/CircleX"
 import EyeOpen from "../icons/EyeOpen"
 import EyeClosed from "../icons/EyeClosed"
-import DepartmentDropdown from "./dropdown/department"
 
 export default function StudentModal() {
     const [openForm, setOpenForm] = useState<boolean>(false)
     const [modal, setModal] = useState<boolean>(false)
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [departments, setDepartments] = useState([])
+
+
     useEffect(() => {
         const handleClick = (event: MouseEvent) => {
             const clickedEl = (event.target as HTMLElement)?.id
@@ -28,8 +32,6 @@ export default function StudentModal() {
         }
     }, [])
 
-    const passwordRef = useRef<HTMLInputElement>(null);
-    const [showPassword, setShowPassword] = useState<boolean>(false)
 
     const generateRandomPassword = () => {
         const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
@@ -73,7 +75,40 @@ export default function StudentModal() {
         }
     };
 
+    const fetchDepartments = async () => {
+        const req = await fetch('http://localhost:3000/api/master/departments', { method: "GET" })
+        const res = await req.json()
+        setDepartments(res.data)
+    }
+
+    useEffect(() => {
+        fetchDepartments()
+    }, [])
+
     const studentFormHandler = async (formData: FormData) => {
+        const studentNumber = formData.get('studentNumber')?.valueOf() as bigint
+        const name = formData.get('studentName')?.valueOf() as string
+        const classes = formData.get('studentClass')?.valueOf() as string
+        const department = formData.get("studentDepartment")?.valueOf() as string
+
+        const email = formData.get("studentEmail")?.valueOf() as string
+        const username = formData.get("studentUsername")?.valueOf() as string
+        const password = formData.get("studentPassword")?.valueOf() as string
+
+        const req = await fetch('http://localhost:3000/api/master/students', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                studentNumber, name, classes, department,
+                email, username, password,
+            })
+        })
+
+        const res = await req.json()
+        console.log(res)
+
     }
 
     return (
@@ -102,11 +137,11 @@ export default function StudentModal() {
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="studentNumber" className="text-xs font-semibold uppercase text-slate-500">Student Number</label>
                                         <input
-                                            type="text"
+                                            type="number"
                                             className="px-4 py-2 border-0 rounded-lg shadow-inner outline-none bg-slate-200 placeholder:text-slate-400 focus:outline-2 focus:outline-slate-400 focus:outline-offset-0"
                                             name="studentNumber"
                                             id="studentNumber"
-                                            placeholder="Student name..." />
+                                            placeholder="Student number..." />
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="studentName" className="text-xs font-semibold uppercase text-slate-500">Name</label>
@@ -120,17 +155,18 @@ export default function StudentModal() {
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="studentClass" className="text-xs font-semibold uppercase text-slate-500">Class</label>
                                         <select name="studentClass" id="studentClass" className="px-4 py-2 border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400">
-                                            <option value="X">X</option>
-                                            <option value="XI">XI</option>
-                                            <option value="XII">XII</option>
+                                            <option value="x">X</option>
+                                            <option value="xi">XI</option>
+                                            <option value="xii">XII</option>
                                         </select>
                                     </div>
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="studentDepartment" className="text-xs font-semibold uppercase text-slate-500">Department</label>
                                         <select name="studentDepartment" id="studentDepartment" className="px-4 py-2 border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400">
-                                            <option value="example">example</option>
+                                            {departments.map((department: any) => (
+                                                <option value={department.name} key={department.id}>{department.name}</option>
+                                            ))}
                                         </select>
-                                        <DepartmentDropdown />
                                     </div>
                                 </div>
                             </div>
@@ -140,7 +176,7 @@ export default function StudentModal() {
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="studentEmail" className="text-xs font-semibold uppercase text-slate-500">Email</label>
                                         <input
-                                            type="text"
+                                            type="email"
                                             className="px-4 py-2 border-0 rounded-lg shadow-inner outline-none bg-slate-200 placeholder:text-slate-400 focus:outline-2 focus:outline-slate-400 focus:outline-offset-0"
                                             name="studentEmail"
                                             id="studentEmail"
@@ -167,7 +203,6 @@ export default function StudentModal() {
                                                 placeholder="Student name..." />
                                             <button className='absolute right-4 text-slate-500' type='button' onClick={() => setShowPassword(!showPassword)}>
                                                 {showPassword ? <EyeClosed size="20" /> : <EyeOpen size="20" />}
-
                                             </button>
                                         </div>
                                     </div>
