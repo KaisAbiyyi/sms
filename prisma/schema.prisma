@@ -10,159 +10,172 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model quotes {
-  id     String @id @default(uuid())
-  quotes String @db.Text
+model Quote {
+  id    String @id @default(uuid())
+  quote String @db.Text
 }
 
-model roles {
-  id    String  @id
-  users users[]
+enum Role {
+  superuser
+  admin
+  teacher
+  student
 }
 
-model users {
-  id        String    @id @default(uuid())
-  name      String
-  username  String    @unique
-  email     String    @unique
-  password  String
-  roles     roles?    @relation(fields: [rolesId], references: [id])
-  rolesId   String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  students  students?
-  teachers  teachers?
+model User {
+  id         String       @id @default(uuid())
+  name       String
+  username   String       @unique
+  email      String       @unique
+  role       Role         @default(student)
+  password   String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Student    Student?
+  Teacher    Teacher?
+  User_Token User_Token[]
 }
 
-model classes {
-  id       String     @id
-  students students[]
-}
-
-model departments {
-  id       String     @id @default(uuid())
-  name     String
-  students students[]
-}
-
-model students {
-  id            String      @id @default(uuid())
-  name          String
-  users         users       @relation(fields: [usersId], references: [id])
-  usersId       String      @unique
-  classes       classes     @relation(fields: [classesId], references: [id])
-  classesId     String
-  departments   departments @relation(fields: [departmentsId], references: [id])
-  departmentsId String
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  results       results[]
-}
-
-model teachers {
-  id        String     @id @default(uuid())
-  name      String
-  users     users      @relation(fields: [usersId], references: [id])
-  usersId   String     @unique
-  subjects  subjects[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-}
-
-model subjects {
-  id                 String               @id @default(uuid())
-  name               String
-  teachers           teachers?            @relation(fields: [teachersId], references: [id])
-  teachersId         String?
-  learning_materials learning_materials[]
-  tasks              tasks[]
-  tests              tests[]
-}
-
-model learning_materials {
-  id          String   @id @default(uuid())
-  title       String
-  description String   @db.Text
-  file        String
-  subjects    subjects @relation(fields: [subjectsId], references: [id])
-  subjectsId  String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model tasks {
-  id           String         @id @default(uuid())
-  title        String
-  description  String         @db.Text
-  deadline     DateTime
-  file         String
-  subjects     subjects       @relation(fields: [subjectsId], references: [id])
-  subjectsId   String
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  task_reports task_reports[]
-}
-
-model task_reports {
+model User_Token {
   id        String   @id @default(uuid())
-  file      String
-  tasks     tasks    @relation(fields: [tasksId], references: [id])
-  tasksId   String
+  User      User     @relation(fields: [UserId], references: [id])
+  UserId    String
+  token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model tests {
-  id          String    @id @default(uuid())
+model Class {
+  id      String    @id
+  Student Student[]
+}
+
+model Department {
+  id      String    @id @default(uuid())
+  name    String
+  Student Student[]
+}
+
+model Student {
+  id            String     @id @default(uuid())
+  studentNumber BigInt     @unique
+  name          String
+  User          User       @relation(fields: [UserId], references: [id])
+  UserId        String     @unique
+  Class         Class      @relation(fields: [ClassId], references: [id])
+  ClassId       String
+  Department    Department @relation(fields: [DepartmentId], references: [id])
+  DepartmentId  String
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  Result        Result[]
+}
+
+model Teacher {
+  id            String    @id @default(uuid())
+  teacherNumber BigInt    @unique
+  name          String
+  User          User      @relation(fields: [UserId], references: [id])
+  UserId        String    @unique
+  Subject       Subject[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Subject {
+  id                String              @id @default(uuid())
+  name              String
+  Teacher           Teacher?            @relation(fields: [TeacherId], references: [id])
+  TeacherId         String?
+  Learning_Material Learning_Material[]
+  Task              Task[]
+  Test              Test[]
+}
+
+model Learning_Material {
+  id          String   @id @default(uuid())
   title       String
-  description String    @db.Text
+  description String   @db.Text
+  file        String
+  Subject     Subject  @relation(fields: [SubjectId], references: [id])
+  SubjectId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Task {
+  id          String        @id @default(uuid())
+  title       String
+  description String        @db.Text
+  deadline    DateTime
+  file        String
+  Subject     Subject       @relation(fields: [SubjectId], references: [id])
+  SubjectId   String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Task_Report Task_Report[]
+}
+
+model Task_Report {
+  id        String   @id @default(uuid())
+  file      String
+  Task      Task     @relation(fields: [TaskId], references: [id])
+  TaskId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Test {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
   chances     Int
   deadline    DateTime
-  subjects    subjects  @relation(fields: [subjectsId], references: [id])
-  subjectsId  String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  results     results[]
+  Subject     Subject  @relation(fields: [SubjectId], references: [id])
+  SubjectId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Result      Result[]
 }
 
-model questions {
-  id             String           @id @default(uuid())
-  title          String
-  image          String
-  description    String           @db.Text
-  choices        choices[]
-  result_details result_details[]
+model Question {
+  id            String          @id @default(uuid())
+  title         String
+  image         String
+  description   String          @db.Text
+  Choice        Choice[]
+  Result_Detail Result_Detail[]
 }
 
-model choices {
-  id             String           @id @default(uuid())
-  name           String
-  isRight        Boolean
-  questions      questions        @relation(fields: [questionsId], references: [id])
-  questionsId    String
-  result_details result_details[]
+model Choice {
+  id            String          @id @default(uuid())
+  name          String
+  isRight       Boolean
+  Question      Question        @relation(fields: [QuestionId], references: [id])
+  QuestionId    String
+  Result_Detail Result_Detail[]
 }
 
-model results {
-  id             String           @id @default(uuid())
-  tests          tests            @relation(fields: [testsId], references: [id])
-  testsId        String
-  students       students         @relation(fields: [studentsId], references: [id])
-  studentsId     String
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  result_details result_details[]
+model Result {
+  id            String          @id @default(uuid())
+  Test          Test            @relation(fields: [TestId], references: [id])
+  TestId        String
+  Student       Student         @relation(fields: [StudentId], references: [id])
+  StudentId     String
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  Result_Detail Result_Detail[]
 }
 
-model result_details {
-  id          String    @id @default(uuid())
-  isRight     Boolean
-  results     results   @relation(fields: [resultsId], references: [id])
-  resultsId   String
-  questions   questions @relation(fields: [questionsId], references: [id])
-  questionsId String
-  choices     choices   @relation(fields: [choicesId], references: [id])
-  choicesId   String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+model Result_Detail {
+  id         String   @id @default(uuid())
+  isRight    Boolean
+  Result     Result   @relation(fields: [ResultId], references: [id])
+  ResultId   String
+  Question   Question @relation(fields: [QuestionId], references: [id])
+  QuestionId String
+  Choice     Choice   @relation(fields: [ChoiceId], references: [id])
+  ChoiceId   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }

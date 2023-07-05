@@ -7,9 +7,9 @@ export const metadata: Metadata = {
 }
 
 export default async function GeneralLogin() {
-    const totalQuotes = await prisma.quotes.count();
+    const totalQuotes = await prisma.quote.count();
     const randomIndex = Math.floor(Math.random() * totalQuotes);
-    const quote = await prisma.quotes.findFirst({
+    const quote = await prisma.quote.findFirst({
         skip: randomIndex
     })
     return <>
@@ -18,11 +18,11 @@ export default async function GeneralLogin() {
                 <div className="flex items-center w-full gap-2 p-5 bg-blue-500 rounded-lg lg:flex-col lg:h-full md:flex-col md:h-full h-1/4 lg:w-1/2">
                     <div className="flex flex-col">
                         <h1 className="text-3xl font-bold text-center text-blue-100">SmartSchool</h1>
-                        <span className="text-sm font-semibold text-center text-blue-300">{quote?.quotes}</span>
+                        <span className="text-sm font-semibold text-center text-blue-300">{quote?.quote}</span>
                     </div>
                     <img src="/assets/images/study.png" className="object-contain w-1/4 h-full lg:w-full md:w-full" alt="" />
                 </div>
-                <LoginForm redirectTo={"/"} fetchTo={"/auth/login"} />
+                <LoginForm redirectTo={"/master"} fetchTo={"http://localhost:3000/api/master/auth/login"} />
             </div>
         </div>
     </>
