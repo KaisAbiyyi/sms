@@ -1,18 +1,20 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
-import DownloadIcon from "../icons/DownloadIcon"
-import CircleX from "../icons/CircleX"
-import EyeOpen from "../icons/EyeOpen"
-import EyeClosed from "../icons/EyeClosed"
+import { ChangeEvent, SyntheticEvent, useEffect, useRef, useState } from "react"
+import DownloadIcon from "../../icons/DownloadIcon"
+import CircleX from "../../icons/CircleX"
+import EyeOpen from "../../icons/EyeOpen"
+import EyeClosed from "../../icons/EyeClosed"
+import { useRouter } from "next/navigation"
+import * as XLSX from 'xlsx'
 
-export default function StudentModal() {
+export default function StudentModal(props: any) {
     const [openForm, setOpenForm] = useState<boolean>(false)
     const [modal, setModal] = useState<boolean>(false)
     const passwordRef = useRef<HTMLInputElement>(null);
     const [showPassword, setShowPassword] = useState<boolean>(false)
-    const [departments, setDepartments] = useState([])
-
+    const [selectedFile, setSelectedFile] = useState<File | null>(null)
+    const router = useRouter()
 
     useEffect(() => {
         const handleClick = (event: MouseEvent) => {
@@ -75,16 +77,6 @@ export default function StudentModal() {
         }
     };
 
-    const fetchDepartments = async () => {
-        const req = await fetch('http://localhost:3000/api/master/departments', { method: "GET" })
-        const res = await req.json()
-        setDepartments(res.data)
-    }
-
-    useEffect(() => {
-        fetchDepartments()
-    }, [])
-
     const studentFormHandler = async (formData: FormData) => {
         const studentNumber = formData.get('studentNumber')?.valueOf() as bigint
         const name = formData.get('studentName')?.valueOf() as string
@@ -107,9 +99,58 @@ export default function StudentModal() {
         })
 
         const res = await req.json()
-        console.log(res)
 
+        router.push('/master/manage/students')
+        setModal(false)
     }
+
+    const importExcel = (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files && event.target.files[0];
+        setSelectedFile(file || null);
+    };
+
+    const importExcelSubmit = () => {
+        if (selectedFile) {
+            const reader = new FileReader();
+
+            reader.onload = async function (e) {
+                const data = new Uint8Array(e.target?.result as ArrayBuffer);
+                const workbook = XLSX.read(data, { type: 'array' });
+                const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(worksheet, {
+                    header: 1,
+                    range: 1,
+                    raw: false,
+                });
+
+                const keys: string[] = ["studentNumber", "name", "class", "department", "email", "username", "password"];
+
+                const parsedData = (jsonData.slice(1) as any[]).map((row: any[]) => {
+                    const obj: { [key: string]: any } = {};
+                    keys.forEach((key: string, index: number) => {
+                        obj[key] = row[index];
+                    });
+                    return obj;
+                });
+
+                const req = await fetch('http://localhost:3000/api/master/students/batch', {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        parsedData
+                    })
+                })
+
+                const res = await req.json()
+                router.push('/master/manage/students')
+                setModal(false)
+            };
+
+            reader.readAsArrayBuffer(selectedFile);
+        }
+    };
 
     return (
         <>
@@ -123,12 +164,12 @@ export default function StudentModal() {
                         </div>
                         <div className="flex items-center gap-2">
                             <div className="flex items-center w-10/12 gap-2">
-                                <input type="file" name="studentImport" id="studentImport" className="w-full px-4 py-2 border-0 rounded-lg shadow-inner outline-none file:rounded-lg file:px-2 file:py-1 file:text-slate-100 file:border-0 file:outline-none file:bg-blue-500 bg-slate-100 placeholder:text-slate-400 focus:outline-2 focus:outline-slate-400 focus:outline-offset-0" />
-                                <button type="button" title="Download Example" className="px-4 py-2 text-sm font-semibold duration-200 ease-in bg-blue-500 border-0 rounded-lg outline-none cursor-pointer w-fit text-slate-100 hover:bg-blue-400 active:bg-blue-400 focus:bg-blue-400">
+                                <a href="/assets/files/examples/Student form example.xlsx" download={"/assets/files/examples/Student form example.xlsx"} type="button" title="Download Example" className="px-4 py-2 text-sm font-semibold duration-200 ease-in bg-blue-500 border-0 rounded-lg outline-none cursor-pointer w-fit text-slate-100 hover:bg-blue-400 active:bg-blue-400 focus:bg-blue-400">
                                     <DownloadIcon size="18" />
-                                </button>
+                                </a>
+                                <input onChange={importExcel} type="file" name="studentImport" id="studentImport" className="w-full px-4 py-2 border-0 rounded-lg shadow-inner outline-none file:rounded-lg file:px-2 file:py-1 file:text-slate-100 file:border-0 file:outline-none file:bg-blue-500 bg-slate-100 placeholder:text-slate-400 focus:outline-2 focus:outline-slate-400 focus:outline-offset-0" />
                             </div>
-                            <button type="button" className="w-3/12 px-4 py-2 text-sm font-semibold duration-200 ease-in bg-green-600 border-0 rounded-lg outline-none cursor-pointer text-slate-100 hover:bg-green-500 active:bg-green-500 focus:bg-green-500">IMPORT</button>
+                            <button type="button" onClick={importExcelSubmit} className="w-3/12 px-4 py-2 text-sm font-semibold duration-200 ease-in bg-green-600 border-0 rounded-lg outline-none cursor-pointer text-slate-100 hover:bg-green-500 active:bg-green-500 focus:bg-green-500">IMPORT</button>
                         </div>
                         <div className="flex gap-4">
                             <div className={`flex flex-col gap-2 ease-in duration-200 h-fit w-1/2`}>
@@ -163,7 +204,7 @@ export default function StudentModal() {
                                     <div className="flex flex-col gap-2">
                                         <label htmlFor="studentDepartment" className="text-xs font-semibold uppercase text-slate-500">Department</label>
                                         <select name="studentDepartment" id="studentDepartment" className="px-4 py-2 border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400">
-                                            {departments.map((department: any) => (
+                                            {props.departments.map((department: any) => (
                                                 <option value={department.name} key={department.id}>{department.name}</option>
                                             ))}
                                         </select>

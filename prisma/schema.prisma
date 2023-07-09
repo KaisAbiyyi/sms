@@ -40,7 +40,7 @@ model User_Token {
   id        String   @id @default(uuid())
   User      User     @relation(fields: [UserId], references: [id])
   UserId    String
-  token     String
+  token     String   @db.LongText
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -73,7 +73,7 @@ model Student {
 
 model Teacher {
   id            String    @id @default(uuid())
-  teacherNumber BigInt    @unique
+  teacherNumber String    @unique
   name          String
   User          User      @relation(fields: [UserId], references: [id])
   UserId        String    @unique
