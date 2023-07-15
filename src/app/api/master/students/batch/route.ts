@@ -35,7 +35,7 @@ export async function POST(request: Request) {
             const insertStudent = await prisma.student.create({
                 data: {
                     studentNumber: student.studentNumber, name: student.name, ClassId: student.class, DepartmentId: DepartmentId, UserId: insertUser.id
-                }
+                },
             })
         })
         return NextResponse.json({

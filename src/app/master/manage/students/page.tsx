@@ -1,8 +1,8 @@
-import StudentModal from "@/components/master/students/createModal"
 import { prisma } from "@/db"
 import { Metadata } from "next"
 import { DataTable } from "./data-table"
 import { columns } from "./columns"
+import ManageModal from "@/components/master/students/createModal"
 
 export const metadata: Metadata = {
     title: "Students"
@@ -16,7 +16,7 @@ export default async function MasterManageStudents() {
             Department: true
         },
         orderBy: {
-            name: "asc"
+            studentNumber: "asc"
         }
     })
     const testing = queryStudents.map((item) => {
@@ -31,18 +31,16 @@ export default async function MasterManageStudents() {
     })
     const classes = await prisma.class.findMany()
     const departments = await prisma.department.findMany()
-    const searchStudent = async (formData: FormData) => {
-        "use server"
-        const name: string = formData.get("searchStudent")?.valueOf() as string
-        const classes: string = formData.get('classes')?.valueOf() as string
-        const departments: string = formData.get('departments')?.valueOf() as string
-    }
-
     return (
         <>
             <div className="flex flex-col gap-8">
-                <StudentModal departments={departments} />
-                <DataTable columns={columns} data={testing} classes={classes} departments={departments} />
+                <ManageModal
+                    departments={departments} />
+                <DataTable
+                    columns={columns}
+                    data={testing}
+                    classes={classes}
+                    departments={departments} />
             </div>
         </>
     )

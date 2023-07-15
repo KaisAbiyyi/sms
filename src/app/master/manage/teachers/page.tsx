@@ -1,3 +1,4 @@
+import TeacherModal from "@/components/master/teacher/modal";
 import { prisma } from "@/db";
 import { Metadata } from "next";
 
@@ -31,20 +32,21 @@ export default async function MasterManageTeachers() {
                             className="px-4 py-2 border-0 rounded-lg shadow-inner outline-none bg-slate-100 placeholder:text-slate-400 focus:outline-2 focus:outline-slate-400 focus:outline-offset-0" />
                     </div>
                     <div className="flex flex-col w-4/12 gap-2">
-                            <label htmlFor="subjects" className="text-xs font-semibold uppercase text-slate-500">Subjects</label>
-                            <select
-                                name="subjects"
-                                id="subjects"
-                                className="px-4 py-2 border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400"
-                            >
-                                <option value="All">All</option>
-                                {subjects.map((subject) => (
-                                    <option value={subject.id} key={subject.id}>{subject.name}</option>
-                                ))}
-                            </select>
-                        </div>
+                        <label htmlFor="subjects" className="text-xs font-semibold uppercase text-slate-500">Subjects</label>
+                        <select
+                            name="subjects"
+                            id="subjects"
+                            className="px-4 py-2 border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400"
+                        >
+                            <option value="All">All</option>
+                            {subjects.map((subject) => (
+                                <option value={subject.id} key={subject.id}>{subject.name}</option>
+                            ))}
+                        </select>
+                    </div>
                 </div>
             </div>
+            <TeacherModal fields={['name', 'teacherNumber']} createUser={true} userCredential={['username', 'email', 'password']} />
             <div className="flex flex-col overflow-hidden rounded-lg shadow bg-slate-50">
                 <div className="flex justify-between p-2">
                     <h1 className="font-semibold text-md text-slate-700">List of all Teachers</h1>

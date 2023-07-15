@@ -42,7 +42,7 @@ export default function MasterNavbar() {
 
     return <>
         <div className="flex items-center justify-between h-20">
-            <h1 className="text-xl font-semibold capitalize text-slate-700">{pathName}</h1>
+            <h1 className="text-lg font-semibold capitalize text-slate-700">{pathName}</h1>
             <div className="relative flex flex-col w-10 h-10" ref={dropdownRef}>
                 <button className="absolute inset-0 w-full h-10 rounded-full bg-slate-200" onClick={toggleDropdown}></button>
                 {profileDropdown &&

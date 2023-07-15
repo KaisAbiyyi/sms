@@ -3,6 +3,7 @@
 import ExternalLinkIcon from "@/components/icons/ExternalLinkIcon"
 import { ColumnDef, filterFns } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 export type Student = {
@@ -106,8 +107,9 @@ export const columns: ColumnDef<Student>[] = [
             const router = useRouter()
             return (
                 <div>
-                    <button className="p-1 duration-200 ease-in rounded-full hover:bg-blue-500 hover:text-slate-100 text-slate-400" title="Detail" onClick={() => router.push('/master/manage/students/' + student.name.toLowerCase().replaceAll(' ', '-'))}>
-                        <ExternalLinkIcon size="18" /></button>
+                    <Link className="duration-200 ease-in hover:text-blue-500 text-slate-400" href={`/master/manage/students/${student.name.toLowerCase().replaceAll(' ', '-')}`}>
+                        <ExternalLinkIcon size="18" />
+                    </Link>
                 </div>
             )
         }

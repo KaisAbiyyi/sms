@@ -8,7 +8,11 @@ import EyeClosed from "../../icons/EyeClosed"
 import { useRouter } from "next/navigation"
 import * as XLSX from 'xlsx'
 
-export default function StudentModal(props: any) {
+interface ManageModalTypes {
+    departments: any
+}
+
+export default function ManageModal(props: ManageModalTypes) {
     const [openForm, setOpenForm] = useState<boolean>(false)
     const [modal, setModal] = useState<boolean>(false)
     const passwordRef = useRef<HTMLInputElement>(null);
@@ -78,7 +82,7 @@ export default function StudentModal(props: any) {
     };
 
     const studentFormHandler = async (formData: FormData) => {
-        const studentNumber = formData.get('studentNumber')?.valueOf() as bigint
+        const studentNumber = formData.get('studentNumber')?.valueOf() as string
         const name = formData.get('studentName')?.valueOf() as string
         const classes = formData.get('studentClass')?.valueOf() as string
         const department = formData.get("studentDepartment")?.valueOf() as string
