@@ -3,6 +3,7 @@ import { Metadata } from "next"
 import { DataTable } from "./data-table"
 import { columns } from "./columns"
 import ManageModal from "@/components/master/students/createModal"
+import CreateModal, { ModalFieldsTypes } from "@/components/master/modal"
 
 export const metadata: Metadata = {
     title: "Students"
@@ -25,21 +26,73 @@ export default async function MasterManageStudents() {
             name: item.name,
             email: item.User.email,
             username: item.User.username,
-            classes: item.ClassId,
+            grade: item.GradeId,
             departments: item.Department.name
         }
     })
     const classes = await prisma.class.findMany()
+    const fields: ModalFieldsTypes[] = [
+        {
+            name: "Student",
+            data: [
+                {
+                    id: "studentNumber",
+                    label: 'student number',
+                    type: 'text',
+                    data: null
+                },
+                {
+                    id: "name",
+                    label: "name",
+                    type: 'text',
+                    data: null
+                },
+                {
+                    id: "classes",
+                    label: "classes (eg:X RPL 1)",
+                    type: "selectbox",
+                    data: classes,
+                },
+            ]
+        },
+        {
+            name: "User",
+            data: [
+                {
+                    id: "username",
+                    label: 'username',
+                    type: 'text',
+                    data: null
+                },
+                {
+                    id: "email",
+                    label: "email",
+                    type: 'email',
+                    data: null
+                },
+                {
+                    id: "password",
+                    label: "password",
+                    type: "password",
+                    data: null
+                }
+            ]
+        }
+    ]
+    const grades = await prisma.class.findMany()
     const departments = await prisma.department.findMany()
     return (
         <>
             <div className="flex flex-col gap-8">
-                <ManageModal
-                    departments={departments} />
+                <CreateModal
+                    model="students"
+                    batch={true}
+                    fields={fields}
+                    createUser={true} />
                 <DataTable
                     columns={columns}
                     data={testing}
-                    classes={classes}
+                    grades={grades}
                     departments={departments} />
             </div>
         </>

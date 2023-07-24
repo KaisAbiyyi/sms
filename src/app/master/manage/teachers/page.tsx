@@ -1,4 +1,4 @@
-import TeacherModal from "@/components/master/teacher/modal";
+import TeacherModal from "@/components/master/modal";
 import { prisma } from "@/db";
 import { Metadata } from "next";
 
@@ -16,6 +16,19 @@ export default async function MasterManageTeachers() {
 
     return (
         <div className="flex flex-col gap-8">
+            <TeacherModal
+                model="teachers"
+                batch={true}
+                fields={[
+                    'name',
+                    'teacherNumber'
+                ]}
+                createUser={true}
+                userCredential={[
+                    'username',
+                    'email',
+                    'password'
+                ]} />
             <div className="flex gap-4">
                 <div className="w-2/12 gap-2 p-4 rounded-lg shadow bg-slate-50">
                     <span className="text-xs font-semibold uppercase text-slate-500">Total teachers registered</span>
@@ -46,7 +59,6 @@ export default async function MasterManageTeachers() {
                     </div>
                 </div>
             </div>
-            <TeacherModal fields={['name', 'teacherNumber']} createUser={true} userCredential={['username', 'email', 'password']} />
             <div className="flex flex-col overflow-hidden rounded-lg shadow bg-slate-50">
                 <div className="flex justify-between p-2">
                     <h1 className="font-semibold text-md text-slate-700">List of all Teachers</h1>

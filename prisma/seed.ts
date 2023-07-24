@@ -46,17 +46,7 @@ async function main() {
         ]
     })
 
-    await prisma.department.createMany({
-        data: [
-            { name: "RPL" },
-            { name: "TKJ" },
-            { name: "OTKP" },
-            { name: "BDP" },
-            { name: "AKL" },
-        ]
-    })
-
-    await prisma.class.createMany({
+    await prisma.grade.createMany({
         data: [
             { id: "x" },
             { id: "xi" },

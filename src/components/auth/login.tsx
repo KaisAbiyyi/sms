@@ -68,8 +68,8 @@ export default function LoginForm(props: any) {
                     type="email"
                     name="email"
                     id="email"
-                    className={`px-4 py-2 border-0 rounded-lg shadow-inner outline-none bg-slate-100 placeholder:text-slate-400 
-                    ${emailErr.trim() !== '' ? 'outline-2 outline-red-500 outline-offset-0 placeholder:text-red-500 bg-red-50' : ''}`}
+                    className={`px-4 py-2 border-0 rounded-lg shadow-sm outline-none bg-slate-50 focus:outline focus:outline-offset-0 focus:outline-blue-500 placeholder:text-slate-400 
+                    ${emailErr.trim() !== '' ? 'outline-1 outline-red-500 outline-offset-0 placeholder:text-red-500 bg-red-50' : ''}`}
                     placeholder="Enter your email address" />
                 {emailErr.trim() !== '' &&
                     <span className="text-xs font-semibold text-red-500">{emailErr}</span>
@@ -82,15 +82,14 @@ export default function LoginForm(props: any) {
                         type={showPassword ? 'text' : 'password'}
                         name="password"
                         id="password"
-                        className={`px-4 w-full py-2 border-0 rounded-lg shadow-inner outline-none bg-slate-100 placeholder:text-slate-400 
-                    ${emailErr.trim() !== '' ? 'outline-2 outline-red-500 outline-offset-0 placeholder:text-red-500 bg-red-50' : ''}`}
+                        className={`px-4 w-full py-2 border-0 rounded-lg shadow-sm outline-none focus:outline focus:outline-offset-0 focus:outline-blue-500 bg-slate-50 placeholder:text-slate-400 
+                    ${emailErr.trim() !== '' ? 'outline-1 outline-red-500 outline-offset-0 placeholder:text-red-500 bg-red-50' : ''}`}
                         placeholder="Enter your password..." />
                     {passwordErr.trim() !== '' &&
                         <span className="text-xs font-semibold text-red-500">{passwordErr}</span>
                     }
-                    <button className='absolute right-4 text-slate-500' type='button' onClick={() => setShowPassword(!showPassword)}>
+                    <button className='absolute duration-200 ease-in outline-none right-4 text-slate-500 hover:text-blue-500 focus:text-blue-500' type='button' onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? <EyeClosed size="20" /> : <EyeOpen size="20" />}
-
                     </button>
                 </div>
             </div>

@@ -23,18 +23,15 @@ import {
 
 import { ChangeEvent, useState } from "react"
 
+
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
-    data: TData[],
-    grades: {}[],
-    departments: {}[],
+    data: TData[]
 }
 
 export function DataTable<TData, TValue>({
     columns,
     data,
-    grades,
-    departments,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = useState<SortingState>([])
     const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
@@ -55,6 +52,7 @@ export function DataTable<TData, TValue>({
             globalFilter
         }
     })
+
     const handleColumnFilter = (event: ChangeEvent<HTMLSelectElement>) => {
         console.log(event.target.id)
         if (event.target.value === 'All') {
@@ -68,50 +66,20 @@ export function DataTable<TData, TValue>({
         <div className="flex flex-col gap-8">
             <div className="flex gap-4">
                 <div className="w-2/12 gap-2 p-4 rounded-lg shadow bg-slate-50">
-                    <span className="text-xs font-semibold uppercase text-slate-500">Total students registered</span>
+                    <span className="text-xs font-semibold uppercase text-slate-500">Total departments registered</span>
                     <h1 className="text-3xl font-semibold text-slate-700">{data.length}</h1>
                 </div>
                 <div className="flex w-10/12 gap-4 p-4 rounded-lg shadow bg-slate-50">
-                    <div className="flex flex-col w-6/12 gap-2">
-                        <label htmlFor="searchStudents" className="text-xs font-semibold uppercase text-slate-500">Who are you looking for?</label>
+                    <div className="flex flex-col w-full gap-2">
+                        <label htmlFor="searchDepartments" className="text-xs font-semibold uppercase text-slate-500">What are you looking for?</label>
                         <input
                             type="text"
-                            name="searchStudents"
-                            id="searchStudents"
-                            placeholder="Search student name, number, class, department, etc."
+                            name="searchDepartments"
+                            id="searchDepartments"
+                            placeholder="Search department name"
                             value={globalFilter ?? ''}
                             onChange={(event) => table.setGlobalFilter(event.target.value)}
                             className="px-4 py-2 border-0 rounded-lg shadow-inner outline-none bg-slate-100 placeholder:text-slate-400 focus:outline-2 focus:outline-slate-400 focus:outline-offset-0" />
-                    </div>
-                    <div className="flex flex-col w-3/12 gap-2">
-                        <label htmlFor="classes" className="text-xs font-semibold uppercase text-slate-500">Class</label>
-                        <select
-                            name="classes"
-                            id="classes"
-                            className="px-4 py-2 border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400"
-                            value={(table.getColumn("classes")?.getFilterValue() as string) ?? ''}
-                            onChange={handleColumnFilter}
-                        >
-                            <option value="All">All</option>
-                            {grades.map((classe: any) => (
-                                <option value={classe.id} className="uppercase" key={classe.id}>{classe.id}</option>
-                            ))}
-                        </select>
-                    </div>
-                    <div className="flex flex-col w-3/12 gap-2">
-                        <label htmlFor="departments" className="text-xs font-semibold uppercase text-slate-500">Department</label>
-                        <select
-                            name="departments"
-                            id="departments"
-                            className="px-4 py-2 border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400"
-                            value={(table.getColumn("departments")?.getFilterValue() as string) ?? ""}
-                            onChange={handleColumnFilter}
-                        >
-                            <option value="All">All</option>
-                            {departments.map((department: any) => (
-                                <option key={department.id} value={department.name}>{department.name}</option>
-                            ))}
-                        </select>
                     </div>
                 </div>
             </div>

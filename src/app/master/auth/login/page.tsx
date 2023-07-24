@@ -14,7 +14,7 @@ export default async function GeneralLogin() {
     })
     return <>
         <div className="relative flex items-center justify-center w-full h-full overflow-hidden bg-[url('/assets/images/login-bg.svg')] bg-no-repeat bg-cover">
-            <div className="flex flex-col md:flex-row lg:flex-row mx-4 w-auto lg:w-[1000px] gap-4 p-4 rounded-xl h-[600px] drop-shadow-md bg-slate-50">
+            <div className="flex flex-col md:flex-row lg:flex-row mx-4 w-auto lg:w-[1000px] gap-4 p-4 rounded-xl h-[600px] drop-shadow-md bg-slate-100">
                 <div className="flex items-center w-full gap-2 p-5 bg-blue-500 rounded-lg lg:flex-col lg:h-full md:flex-col md:h-full h-1/4 lg:w-1/2">
                     <div className="flex flex-col">
                         <h1 className="text-3xl font-bold text-center text-blue-100">SmartSchool</h1>

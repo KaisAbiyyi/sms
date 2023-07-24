@@ -45,51 +45,72 @@ model User_Token {
   updatedAt DateTime @updatedAt
 }
 
-model Class {
+model Grade {
   id      String    @id
   Student Student[]
+  Class   Class[]
 }
 
 model Department {
   id      String    @id @default(uuid())
   name    String
   Student Student[]
+  Class   Class[]
+}
+
+model Class {
+  id           String      @id @default(uuid())
+  name         String
+  Student      Student[]
+  Grade        Grade?      @relation(fields: [GradeId], references: [id])
+  GradeId      String?
+  Department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId String?
 }
 
 model Student {
-  id            String     @id @default(uuid())
-  studentNumber String     @unique
-  name          String
-  User          User       @relation(fields: [UserId], references: [id])
-  UserId        String     @unique
-  Class         Class      @relation(fields: [ClassId], references: [id])
-  ClassId       String
-  Department    Department @relation(fields: [DepartmentId], references: [id])
-  DepartmentId  String
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
-  Result        Result[]
+  id                 String            @id @default(uuid())
+  studentNumber      String            @unique
+  name               String
+  User               User              @relation(fields: [UserId], references: [id])
+  UserId             String            @unique
+  Grade              Grade             @relation(fields: [GradeId], references: [id])
+  GradeId            String
+  Department         Department        @relation(fields: [DepartmentId], references: [id])
+  DepartmentId       String
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
+  Result             Result[]
+  Class   Class? @relation(fields: [ClassId], references: [id])
+  ClassId String?
 }
 
 model Teacher {
-  id            String    @id @default(uuid())
-  teacherNumber String    @unique
-  name          String
-  User          User      @relation(fields: [UserId], references: [id])
-  UserId        String    @unique
-  Subject       Subject[]
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id              String            @id @default(uuid())
+  teacherNumber   String            @unique
+  name            String
+  User            User              @relation(fields: [UserId], references: [id])
+  UserId          String            @unique
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Subject_Teacher Subject_Teacher[]
 }
 
 model Subject {
   id                String              @id @default(uuid())
   name              String
-  Teacher           Teacher?            @relation(fields: [TeacherId], references: [id])
-  TeacherId         String?
+  Subject_Teacher   Subject_Teacher[]
   Learning_Material Learning_Material[]
   Task              Task[]
   Test              Test[]
+}
+
+model Subject_Teacher {
+  id        String   @id @default(uuid())
+  Teacher   Teacher? @relation(fields: [TeacherId], references: [id])
+  TeacherId String?
+  Subject   Subject? @relation(fields: [subjectId], references: [id])
+  subjectId String?
 }
 
 model Learning_Material {
