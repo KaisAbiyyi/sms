@@ -50,6 +50,11 @@ export default function MasterSidebar() {
                             Teachers
                         </Link>
                         <Link
+                            href={'/master/manage/subjects'}
+                            className={`flex items-center gap-2 px-3 py-1 font-semibold duration-200 ease-in border-b outline-none border-slate-200 text-slate-400 hover:bg-slate-200 focus:bg-slate-200 ${router.startsWith('/master/manage/subjects') ? 'bg-slate-200' : ''}`}>
+                            Subjects
+                        </Link>
+                        <Link
                             href={'/master/manage/classes'}
                             className={`flex items-center gap-2 px-3 py-1 font-semibold duration-200 ease-in border-b outline-none border-slate-200 text-slate-400 hover:bg-slate-200 focus:bg-slate-200 ${router.startsWith('/master/manage/classes') ? 'bg-slate-200' : ''}`}>
                             Classes

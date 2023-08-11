@@ -39,19 +39,22 @@ export default async function MasterManageStudents() {
                     id: "studentNumber",
                     label: 'student number',
                     type: 'text',
-                    data: null
+                    data: null,
+                    selectboxCreateNew: false,
                 },
                 {
                     id: "name",
                     label: "name",
                     type: 'text',
-                    data: null
+                    data: null,
+                    selectboxCreateNew: false,
                 },
                 {
                     id: "classes",
                     label: "classes (eg:X RPL 1)",
                     type: "selectbox",
                     data: classes,
+                    selectboxCreateNew: true
                 },
             ]
         },
@@ -62,19 +65,22 @@ export default async function MasterManageStudents() {
                     id: "username",
                     label: 'username',
                     type: 'text',
-                    data: null
+                    data: null,
+                    selectboxCreateNew: false,
                 },
                 {
                     id: "email",
                     label: "email",
                     type: 'email',
-                    data: null
+                    data: null,
+                    selectboxCreateNew: false,
                 },
                 {
                     id: "password",
                     label: "password",
                     type: "password",
-                    data: null
+                    data: null,
+                    selectboxCreateNew: false,
                 }
             ]
         }

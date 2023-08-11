@@ -12,7 +12,7 @@ export async function POST(request: Request) {
             })
         }
         const { name, teacherNumber, email, username, password } = body
-        
+
         const insertUser = await prisma.user.create({
             data: {
                 name, email, username, password: hashSync(password)
@@ -25,7 +25,11 @@ export async function POST(request: Request) {
             }
         })
 
-        return NextResponse.json({ body })
+        return NextResponse.json({
+            success: true,
+            message: "Teacher registered",
+            data: insertTeacher
+        })
     } catch (error) {
         console.log("Something went wrong: " + error)
         return NextResponse.json({

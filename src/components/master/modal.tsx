@@ -13,6 +13,9 @@ export type ModalFieldsTypes = {
         label: string
         type: string | undefined
         data: Array<object> | string | null
+        selectboxCreateNew: boolean
+        filteredCheckbox: boolean
+        filteredFor: string | null
     }>
 }
 
@@ -24,14 +27,38 @@ interface CreateModalTypes {
 }
 
 export default function CreateModal(props: CreateModalTypes) {
+    const router = useRouter()
+
     const [modal, setModal] = useState<boolean>(false)
+    const [generalError, setGeneralError] = useState<string>()
     const [dropdownVisibility, setDropdownVisibility] = useState(props.fields.flatMap((item: any) =>
         item.data.filter((item: any) => item.type === 'selectbox').map((item: any) => ({
             name: item.id,
             dropdown: true
         }))
     ))
-    const router = useRouter()
+    const [dropdownValue, setDropdownValue] = useState(props.fields.flatMap((item: any) =>
+        item.data.filter((item: any) => item.type === 'selectbox').map((item: any) => ({
+            name: item.id,
+            value: "none",
+            filteredFor: item.filteredFor
+        }))
+    ))
+
+
+    const [checkboxStates, setCheckboxStates] = useState(props.fields.flatMap((item: any) =>
+        item.data.filter((item: any) => item.type === 'checkbox').flatMap((item: any) => {
+            return ({
+                name: item.id,
+                data: item.data.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                    status: false
+                }))
+            }
+            )
+        })
+    ))
 
     useEffect(() => {
         const handleClick = (event: MouseEvent) => {
@@ -53,6 +80,25 @@ export default function CreateModal(props: CreateModalTypes) {
 
     const dropdownsHandler = (event: ChangeEvent<HTMLSelectElement>) => {
         const { name, value } = event.target
+        if (dropdownValue.find(item => item.name === name).filteredFor) {
+            setCheckboxStates((prevData) => {
+                const updatedData = prevData.map((item) =>
+                ({
+                    ...item, data: item.data.map((item: any) =>
+                        ({ ...item, status: false })
+                    )
+                })
+                )
+                return updatedData
+            }
+            )
+        }
+        setDropdownValue((prevData) => {
+            const updatedData = prevData.map((item) =>
+                item.name === name ? { ...item, value } : item
+            )
+            return updatedData
+        })
         if (value === 'createNew') {
             setDropdownVisibility((prevData) => {
                 const updatedData = prevData.map((item) =>
@@ -63,10 +109,24 @@ export default function CreateModal(props: CreateModalTypes) {
         }
     }
 
+    const checkboxHander = (id: string, field: string) => {
+        const updateChecked = checkboxStates.map((firstLayer: any) =>
+            firstLayer.name === field ? {
+                ...firstLayer, data: firstLayer.data.map((secondLayer: any) =>
+                    secondLayer.id === id ? { ...secondLayer, status: !secondLayer.status } : secondLayer
+                )
+            } : firstLayer
+        )
+        setCheckboxStates(updateChecked)
+    }
+
 
     const fetchHandler = async (formData: FormData) => {
-        const fields = props.fields.reduce((acc: any, item: any) => {
+        let fields = props.fields.reduce((acc: any, item: any) => {
             item.data.forEach((dataItem: any) => {
+                if (dataItem.type === 'checkbox') {
+                    return
+                }
                 acc[dataItem.id] = formData.get(dataItem.id)
             });
             return acc;
@@ -77,17 +137,26 @@ export default function CreateModal(props: CreateModalTypes) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(fields)
+            body: JSON.stringify({
+                ...fields,
+                checkboxes: checkboxStates
+            })
         })
 
         const res = await req.json()
-        if (!res.status) {
-            console.log(res)
+        console.log(res)
+        if (!res.success) {
+            setGeneralError(res.message)
+            setTimeout(() => {
+                setGeneralError('')
+            }, 5000);
+            return
         }
 
         setModal(false)
-        router.push("/master/manage/" + props.model)
-
+        setTimeout(() => {
+            router.refresh()
+        }, 500);
     }
 
     return (
@@ -112,29 +181,88 @@ export default function CreateModal(props: CreateModalTypes) {
                             </div>
                         }
                         <form className="flex flex-col gap-4" action={fetchHandler}>
+                            {generalError && (
+                                <div className="px-4 py-2 text-sm font-bold text-center bg-red-500 rounded-lg text-slate-100">
+                                    {generalError}
+                                </div>
+                            )}
                             <div className="flex flex-col gap-8">
                                 {props.fields.map((item: any) => (
                                     <div key={item.name} className={`flex flex-col p-2 rounded-lg bg-slate-100 gap-4`}>
                                         <h1 className="font-semibold uppercase text-md text-slate-700">{item.name} Credentials</h1>
                                         {item.data.map((field: any) => {
+                                            if (field.type === 'checkbox') {
+                                                if (field.filteredCheckbox) {
+                                                    if (dropdownValue.find(item => item.filteredFor === field.id).value === 'none') {
+                                                        return (
+                                                            <div className="flex flex-col gap-2" key={field.id}>
+                                                                <label htmlFor={field.id} className="text-xs font-semibold uppercase text-slate-500">{field.label}</label>
+                                                                <label htmlFor={field.id} className="text-xs font-semibold uppercase text-slate-500">Select for what {dropdownValue.find(item => item.filteredFor === field.id).name} first !</label>
+                                                            </div>
+                                                        )
+                                                    }
+                                                    return (
+                                                        <div className="flex flex-col gap-2" key={field.id}>
+                                                            <label htmlFor={field.id} className="text-xs font-semibold uppercase text-slate-500">{field.label}</label>
+                                                            <div className="flex flex-wrap gap-2">
+                                                                {checkboxStates.find(item => item.name === field.id).data.filter(((item: any) => item.name.split(' ')[0] === dropdownValue.find(item => item.filteredFor === field.id).value)).map((check: any) => (
+                                                                    <div className="relative flex gap-2" key={check.id}>
+                                                                        <input
+                                                                            type={field.type}
+                                                                            name={field.id}
+                                                                            id={check.id}
+                                                                            checked={check.status}
+                                                                            onChange={() => checkboxHander(check.id, field.id)}
+                                                                            className="absolute inset-0 w-full h-full opacity-0"
+                                                                        />
+                                                                        <label htmlFor={check.id} className={`py-1 px-2 text-xs font-semibold uppercase shadow-sm cursor-pointer rounded-lg ${checkboxStates.find(item => item.name === field.id).data.find((item: any) => item.name === check.name).status ? 'bg-blue-500 text-slate-100' : 'bg-slate-50 text-slate-500'}`}>{check.name}</label>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                                return (
+                                                    <div className="flex flex-col gap-2" key={field.id}>
+                                                        <label htmlFor={field.id} className="text-xs font-semibold uppercase text-slate-500">{field.label}</label>
+                                                        <div className="flex flex-wrap gap-2">
+                                                            {checkboxStates.map((check: any) => (
+                                                                <div className="relative flex gap-2" key={check.id}>
+                                                                    <input
+                                                                        type={field.type}
+                                                                        name={field.id}
+                                                                        id={check.id}
+                                                                        checked={check.status}
+                                                                        onChange={() => checkboxHander(check.id, field.id)}
+                                                                        className="absolute inset-0 w-full h-full opacity-0"
+                                                                    />
+                                                                    <label htmlFor={check.id} className={`py-1 px-2 text-xs font-semibold uppercase shadow-sm cursor-pointer rounded-lg ${checkboxStates.find((item: any) => item.name === check.name).status ? 'bg-blue-500 text-slate-100' : 'bg-slate-50 text-slate-500'}`}>{check.name}</label>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }
                                             if (field.type === 'selectbox') {
                                                 return (
                                                     <div className="flex flex-col gap-2" key={field.id}>
                                                         <label htmlFor={field.id} className="text-xs font-semibold uppercase text-slate-500">{field.label}</label>
-                                                        {dropdownVisibility[dropdownVisibility.findIndex(item => item.name === field.id)].dropdown &&
+                                                        {dropdownVisibility.find((item) => item.name === field.id).dropdown &&
                                                             <select
                                                                 onChange={dropdownsHandler}
                                                                 name={field.id}
                                                                 id={field.id}
-                                                                className="px-4 py-2 border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400">
-                                                                <option value={"none"}>Select Class Name</option>
+                                                                className="px-4 py-2 uppercase border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400">
+                                                                <option value={"none"}>Select {field.label} Name</option>
                                                                 {field.data.map((item: any) => (
                                                                     <option value={item.id} key={item.id}>{item.name}</option>
                                                                 ))}
-                                                                <option value="createNew">Create New +</option>
+                                                                {field.selectboxCreateNew &&
+                                                                    <option value="createNew">Create New +</option>
+                                                                }
                                                             </select>
                                                         }
-                                                        {!dropdownVisibility[dropdownVisibility.findIndex(item => item.name === field.id)].dropdown &&
+                                                        {!dropdownVisibility.find((item) => item.name === field.id).dropdown &&
                                                             <div className="flex gap-4">
                                                                 <input
                                                                     type="text"

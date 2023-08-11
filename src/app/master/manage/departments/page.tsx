@@ -14,6 +14,7 @@ export default async function MasterManageDepartments() {
                     label: "Name",
                     type: "text",
                     data: null,
+                    selectboxCreateNew: false
                 }
             ]
         }
@@ -24,6 +25,9 @@ export default async function MasterManageDepartments() {
             Class: {
                 include: {
                     Student: true
+                },
+                orderBy: {
+                    name: "asc"
                 }
             }
         },
@@ -37,9 +41,9 @@ export default async function MasterManageDepartments() {
         }))
 
         return {
-            ...item,
             name: item.name,
-            students: numberOfStudents.reduce((totalStudent, dClass) => totalStudent + dClass.numberOfStudents, 0)
+            students: numberOfStudents.reduce((totalStudent, dClass) => totalStudent + dClass.numberOfStudents, 0),
+            classes: item.Class
         }
 
     })
