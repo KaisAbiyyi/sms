@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/table"
 
 import { ChangeEvent, useState } from "react"
+import InputModel from "@/components/elements/InputModel"
 
 
 interface DataTableProps<TData, TValue> {
@@ -70,15 +71,14 @@ export function DataTable<TData, TValue>({
                 </div>
                 <div className="flex w-10/12 gap-4 p-4 rounded-lg shadow bg-slate-50">
                     <div className="flex flex-col w-full gap-2">
-                        <label htmlFor="searchDepartments" className="text-xs font-semibold uppercase text-slate-500">What are you looking for?</label>
-                        <input
+                        <label htmlFor="searchSubjects" className="text-xs font-semibold uppercase text-slate-500">What are you looking for?</label>
+                        <InputModel
                             type="text"
-                            name="searchDepartments"
-                            id="searchDepartments"
+                            name="searchSubjects"
+                            id="searchSubjects"
                             placeholder="Search subject name"
                             value={globalFilter ?? ''}
-                            onChange={(event) => table.setGlobalFilter(event.target.value)}
-                            className="px-4 py-2 border-0 rounded-lg shadow-inner outline-none bg-slate-100 placeholder:text-slate-400 focus:outline-2 focus:outline-slate-400 focus:outline-offset-0" />
+                            onChange={(event) => table.setGlobalFilter(event.target.value)} />
                     </div>
                 </div>
             </div>

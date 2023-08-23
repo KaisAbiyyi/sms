@@ -38,7 +38,7 @@ model User {
 
 model User_Token {
   id        String   @id @default(uuid())
-  User      User     @relation(fields: [UserId], references: [id])
+  User      User     @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   UserId    String
   token     String   @db.LongText
   createdAt DateTime @default(now())
@@ -53,19 +53,21 @@ model Grade {
 }
 
 model Department {
-  id      String    @id @default(uuid())
-  name    String
-  Student Student[]
-  Class   Class[]
+  id               String             @id @default(uuid())
+  name             String
+  fullName         String?
+  Student          Student[]
+  Class            Class[]
+  Department_Title Department_Title[]
 }
 
 model Class {
   id              String            @id @default(uuid())
   name            String
   Student         Student[]
-  Grade           Grade?            @relation(fields: [GradeId], references: [id])
+  Grade           Grade?            @relation(fields: [GradeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   GradeId         String?
-  Department      Department?       @relation(fields: [departmentId], references: [id])
+  Department      Department?       @relation(fields: [departmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   departmentId    String?
   Subject_Classes Subject_Classes[]
 }
@@ -74,28 +76,40 @@ model Student {
   id            String     @id @default(uuid())
   studentNumber String     @unique
   name          String
-  User          User       @relation(fields: [UserId], references: [id])
+  User          User       @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   UserId        String     @unique
-  Grade         Grade      @relation(fields: [GradeId], references: [id])
+  Grade         Grade      @relation(fields: [GradeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   GradeId       String
-  Department    Department @relation(fields: [DepartmentId], references: [id])
+  Department    Department @relation(fields: [DepartmentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   DepartmentId  String
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt
   Result        Result[]
-  Class         Class?     @relation(fields: [ClassId], references: [id])
+  Class         Class?     @relation(fields: [ClassId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ClassId       String?
 }
 
 model Teacher {
-  id             String           @id @default(uuid())
-  teacherNumber  String           @unique
-  name           String
-  User           User             @relation(fields: [UserId], references: [id])
-  UserId         String           @unique
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  Subject_Detail Subject_Detail[]
+  id               String             @id @default(uuid())
+  teacherNumber    String             @unique
+  name             String
+  User             User               @relation(fields: [UserId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  UserId           String             @unique
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  Subject_Detail   Subject_Detail[]
+  Department_Title Department_Title[]
+}
+
+model Department_Title {
+  id           String      @id @default(uuid())
+  name         String
+  Teacher      Teacher?    @relation(fields: [teacherId], references: [id])
+  teacherId    String?
+  Department   Department? @relation(fields: [departmentId], references: [id])
+  departmentId String?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 model Subject {
@@ -107,11 +121,11 @@ model Subject {
 model Subject_Detail {
   id                String              @id @default(uuid())
   name              String
-  Teacher           Teacher?            @relation(fields: [TeacherId], references: [id])
+  Teacher           Teacher?            @relation(fields: [TeacherId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   TeacherId         String?
-  Subject           Subject             @relation(fields: [subjectId], references: [id])
+  Subject           Subject             @relation(fields: [subjectId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subjectId         String
-  Grade             Grade?              @relation(fields: [gradeId], references: [id])
+  Grade             Grade?              @relation(fields: [gradeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   gradeId           String?
   Learning_Material Learning_Material[]
   Task              Task[]
@@ -121,8 +135,8 @@ model Subject_Detail {
 
 model Subject_Classes {
   id               String         @id @default(uuid())
-  Subject_Detail   Subject_Detail @relation(fields: [subject_DetailId], references: [id])
-  Class            Class          @relation(fields: [classId], references: [id])
+  Subject_Detail   Subject_Detail @relation(fields: [subject_DetailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Class            Class          @relation(fields: [classId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subject_DetailId String
   classId          String
 }
@@ -134,7 +148,7 @@ model Learning_Material {
   file             String
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
-  Subject_Detail   Subject_Detail? @relation(fields: [subject_DetailId], references: [id])
+  Subject_Detail   Subject_Detail? @relation(fields: [subject_DetailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subject_DetailId String?
 }
 
@@ -147,14 +161,14 @@ model Task {
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   Task_Report      Task_Report[]
-  Subject_Detail   Subject_Detail? @relation(fields: [subject_DetailId], references: [id])
+  Subject_Detail   Subject_Detail? @relation(fields: [subject_DetailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subject_DetailId String?
 }
 
 model Task_Report {
   id        String   @id @default(uuid())
   file      String
-  Task      Task     @relation(fields: [TaskId], references: [id])
+  Task      Task     @relation(fields: [TaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   TaskId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -169,7 +183,7 @@ model Test {
   createdAt        DateTime        @default(now())
   updatedAt        DateTime        @updatedAt
   Result           Result[]
-  Subject_Detail   Subject_Detail? @relation(fields: [subject_DetailId], references: [id])
+  Subject_Detail   Subject_Detail? @relation(fields: [subject_DetailId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   subject_DetailId String?
 }
 
@@ -186,16 +200,16 @@ model Choice {
   id            String          @id @default(uuid())
   name          String
   isRight       Boolean
-  Question      Question        @relation(fields: [QuestionId], references: [id])
+  Question      Question        @relation(fields: [QuestionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   QuestionId    String
   Result_Detail Result_Detail[]
 }
 
 model Result {
   id            String          @id @default(uuid())
-  Test          Test            @relation(fields: [TestId], references: [id])
+  Test          Test            @relation(fields: [TestId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   TestId        String
-  Student       Student         @relation(fields: [StudentId], references: [id])
+  Student       Student         @relation(fields: [StudentId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   StudentId     String
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
@@ -205,11 +219,11 @@ model Result {
 model Result_Detail {
   id         String   @id @default(uuid())
   isRight    Boolean
-  Result     Result   @relation(fields: [ResultId], references: [id])
+  Result     Result   @relation(fields: [ResultId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ResultId   String
-  Question   Question @relation(fields: [QuestionId], references: [id])
+  Question   Question @relation(fields: [QuestionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   QuestionId String
-  Choice     Choice   @relation(fields: [ChoiceId], references: [id])
+  Choice     Choice   @relation(fields: [ChoiceId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   ChoiceId   String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

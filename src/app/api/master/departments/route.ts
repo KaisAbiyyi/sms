@@ -26,8 +26,9 @@ export async function POST(request: Request) {
     try {
         const body = await request.json()
         const name = body.name.toLowerCase()
-        
-        if (!name) {
+        const fullName = body.fullName.toLowerCase()
+
+        if (!name || !fullName) {
             return NextResponse.json({
                 success: false,
                 message: "Invalid Fields"
@@ -49,7 +50,8 @@ export async function POST(request: Request) {
 
         const store = await prisma.department.create({
             data: {
-                name
+                name,
+                fullName
             }
         })
 

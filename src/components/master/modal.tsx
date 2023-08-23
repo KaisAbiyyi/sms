@@ -5,6 +5,7 @@ import DownloadIcon from "@/components/icons/DownloadIcon"
 import { XIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useEffect, useState } from "react"
+import InputModel from "../elements/InputModel"
 
 export type ModalFieldsTypes = {
     name: string
@@ -139,7 +140,10 @@ export default function CreateModal(props: CreateModalTypes) {
             },
             body: JSON.stringify({
                 ...fields,
-                checkboxes: checkboxStates
+                checkboxes: checkboxStates.map(item => ({
+                    name: item.name,
+                    data: item.data.filter((item: any) => item.status)
+                }))
             })
         })
 
@@ -175,7 +179,10 @@ export default function CreateModal(props: CreateModalTypes) {
                                     <a href="/assets/files/examples/Student form example.xlsx" download={"/assets/files/examples/Student form example.xlsx"} type="button" title="Download Example" className="px-4 py-2 text-sm font-semibold duration-200 ease-in bg-blue-500 border-0 rounded-lg outline-none cursor-pointer w-fit text-slate-100 hover:bg-blue-400 active:bg-blue-400 focus:bg-blue-400">
                                         <DownloadIcon size="18" />
                                     </a>
-                                    <input type="file" name={`${props.model}Import`} id={`${props.model}Import`} className="w-full border-0 rounded-lg shadow-sm outline-none file:rounded-l-lg file:px-2 file:py-1 file:text-slate-100 file:border-0 file:outline-none file:bg-blue-500 bg-slate-50 placeholder:text-slate-400 focus:outline-2 focus:outline-blue-500 focus:outline-offset-0" />
+                                    <InputModel
+                                        type="file"
+                                        name={`${props.model}Import`}
+                                        id={`${props.model}Import`} />
                                 </div>
                                 <button type="button" className="w-3/12 px-4 py-2 text-sm font-semibold duration-200 ease-in bg-green-600 border-0 rounded-lg outline-none cursor-pointer text-slate-100 hover:bg-green-500 active:bg-green-500 focus:bg-green-500">IMPORT</button>
                             </div>
@@ -207,14 +214,12 @@ export default function CreateModal(props: CreateModalTypes) {
                                                             <div className="flex flex-wrap gap-2">
                                                                 {checkboxStates.find(item => item.name === field.id).data.filter(((item: any) => item.name.split(' ')[0] === dropdownValue.find(item => item.filteredFor === field.id).value)).map((check: any) => (
                                                                     <div className="relative flex gap-2" key={check.id}>
-                                                                        <input
+                                                                        <InputModel
                                                                             type={field.type}
                                                                             name={field.id}
-                                                                            id={check.id}
+                                                                            id={field.id}
                                                                             checked={check.status}
-                                                                            onChange={() => checkboxHander(check.id, field.id)}
-                                                                            className="absolute inset-0 w-full h-full opacity-0"
-                                                                        />
+                                                                            onChange={() => checkboxHander(check.id, field.id)} />
                                                                         <label htmlFor={check.id} className={`py-1 px-2 text-xs font-semibold uppercase shadow-sm cursor-pointer rounded-lg ${checkboxStates.find(item => item.name === field.id).data.find((item: any) => item.name === check.name).status ? 'bg-blue-500 text-slate-100' : 'bg-slate-50 text-slate-500'}`}>{check.name}</label>
                                                                     </div>
                                                                 ))}
@@ -228,14 +233,12 @@ export default function CreateModal(props: CreateModalTypes) {
                                                         <div className="flex flex-wrap gap-2">
                                                             {checkboxStates.map((check: any) => (
                                                                 <div className="relative flex gap-2" key={check.id}>
-                                                                    <input
+                                                                    <InputModel
                                                                         type={field.type}
                                                                         name={field.id}
-                                                                        id={check.id}
+                                                                        id={field.id}
                                                                         checked={check.status}
-                                                                        onChange={() => checkboxHander(check.id, field.id)}
-                                                                        className="absolute inset-0 w-full h-full opacity-0"
-                                                                    />
+                                                                        onChange={() => checkboxHander(check.id, field.id)} />
                                                                     <label htmlFor={check.id} className={`py-1 px-2 text-xs font-semibold uppercase shadow-sm cursor-pointer rounded-lg ${checkboxStates.find((item: any) => item.name === check.name).status ? 'bg-blue-500 text-slate-100' : 'bg-slate-50 text-slate-500'}`}>{check.name}</label>
                                                                 </div>
                                                             ))}
@@ -264,12 +267,11 @@ export default function CreateModal(props: CreateModalTypes) {
                                                         }
                                                         {!dropdownVisibility.find((item) => item.name === field.id).dropdown &&
                                                             <div className="flex gap-4">
-                                                                <input
+                                                                <InputModel
                                                                     type="text"
                                                                     name={field.id}
                                                                     id={field.id}
-                                                                    placeholder={`Enter ${item.name} ${field.id}`}
-                                                                    className="flex-grow px-4 py-2 border-0 rounded-lg shadow-sm outline-none placeholder:capitalize bg-slate-50 focus:outline focus:outline-offset-0 focus:outline-blue-500 placeholder:text-slate-400" />
+                                                                    placeholder={`Enter ${item.name} ${field.id}`} />
                                                                 <button
                                                                     title="Cancel"
                                                                     onClick={() => {
@@ -293,12 +295,12 @@ export default function CreateModal(props: CreateModalTypes) {
                                                     <label
                                                         htmlFor={field.id}
                                                         className="text-xs font-semibold uppercase text-slate-500">{field.label}</label>
-                                                    <input
+                                                    <InputModel
                                                         type={field.type}
                                                         name={field.id}
                                                         id={field.id}
-                                                        placeholder={`Enter ${item.name} ${field.id}`}
-                                                        className="px-4 py-2 border-0 rounded-lg shadow-sm outline-none placeholder:capitalize bg-slate-50 focus:outline focus:outline-offset-0 focus:outline-blue-500 placeholder:text-slate-400 " />
+                                                        placeholder={`Enter ${item.name} ${field.id}`} />
+
                                                 </div>
 
                                             )

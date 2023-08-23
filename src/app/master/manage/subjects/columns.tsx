@@ -46,49 +46,13 @@ export const columns: ColumnDef<Department>[] = [
         cell: ({ row }) => {
             const name = row.original.name
             const classes = row.original.classes
-            const departments = row.original.departments
-            const [editMode, setEditMode] = useState(classes.map((item: any) => ({
-                id: item.id,
-                status: false
-            })))
             return <div className="flex flex-col gap-2">
                 {classes.map((item: any) => (
-                    <div className="flex flex-col" key={item.id}>
-                        {!editMode.find((find) => find.id === item.id)?.status &&
-                            <div className="flex gap-2">
-                                <Link href={`/master/manage/subjects/detail/${item.gradeId + '-' + name + '-'}`} className="p-1 px-2 text-sm font-bold text-center uppercase duration-200 ease-in rounded-lg hover:bg-blue-500 hover:text-slate-100 w-fit bg-slate-200 text-slate-400" key={item.id}>
-                                    {item.name}
-                                </Link>
-                                <button type="button" onClick={() => {
-                                    const updateEditMode = editMode.map((edit) =>
-                                        edit.id === item.id ? { ...edit, status: !edit.status } : { ...edit, status: false }
-                                    )
-                                    setEditMode(updateEditMode)
-                                }} className="duration-200 ease-in hover:text-blue-500">
-                                    <PenIcon size={16} />
-                                </button>
-                            </div>
-                        }
-                        {editMode.find((find) => find.id === item.id)?.status &&
-                            <div className="flex flex-col gap-2">
-                                <div className="flex flex-col gap-1">
-                                    <label htmlFor="grade" className="text-xs font-semibold uppercase text-slate-500">Grade</label>
-                                    <select name="grade" className="px-2 py-1 uppercase border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400" id="grade">
-                                        <option value="x">X</option>
-                                        <option value="xi">XI</option>
-                                        <option value="xii">XII</option>
-                                    </select>
-                                </div>
-                                <div className="flex flex-col gap-1">
-                                    <label htmlFor="department" className="text-xs font-semibold uppercase text-slate-500">Department</label>
-                                    <select name="department" className="px-2 py-1 uppercase border-2 rounded-lg outline-none border-slate-300 placeholder:text-slate-400 text-slate-400" id="department">
-                                        {departments.map((item: any) => (
-                                            <option value={item.id} key={item.id}>{item.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                        }
+                    <div className="flex flex-wrap gap-2" key={item.id}>
+                        <Link href={`/master/manage/subjects/detail/${item.name.toLowerCase().replaceAll(' ','-')}`} className="p-1 px-2 text-sm font-bold text-center uppercase duration-200 ease-in rounded-lg hover:bg-blue-500 hover:text-slate-100 w-fit bg-slate-200 text-slate-400" key={item.id}>
+                            {item.name}
+                        </Link>
+                        
                     </div>
                 ))}
             </div >

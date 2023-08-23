@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation'
 import { ChangeEvent, FormEvent, useState } from "react"
 import EyeOpen from '../icons/EyeOpen';
 import EyeClosed from '../icons/EyeClosed';
+import InputModel from '../elements/InputModel';
 
 
 export default function LoginForm(props: any) {
@@ -64,13 +65,12 @@ export default function LoginForm(props: any) {
             </div>
             <div className="flex flex-col gap-2">
                 <label htmlFor="email" className="text-xs font-semibold uppercase text-slate-500">Email</label>
-                <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    className={`px-4 py-2 border-0 rounded-lg shadow-sm outline-none bg-slate-50 focus:outline focus:outline-offset-0 focus:outline-blue-500 placeholder:text-slate-400 
-                    ${emailErr.trim() !== '' ? 'outline-1 outline-red-500 outline-offset-0 placeholder:text-red-500 bg-red-50' : ''}`}
-                    placeholder="Enter your email address" />
+                <InputModel
+                    type='email'
+                    name='email'
+                    id='email'
+                    placeholder='Enter your email...'
+                    onError={emailErr.trim() !== '' ? true : false} />
                 {emailErr.trim() !== '' &&
                     <span className="text-xs font-semibold text-red-500">{emailErr}</span>
                 }
@@ -78,22 +78,21 @@ export default function LoginForm(props: any) {
             <div className="flex flex-col gap-2">
                 <label htmlFor="password" className="text-xs font-semibold uppercase text-slate-500">password</label>
                 <div className="relative flex items-center">
-                    <input
+                    <InputModel
                         type={showPassword ? 'text' : 'password'}
-                        name="password"
-                        id="password"
-                        className={`px-4 w-full py-2 border-0 rounded-lg shadow-sm outline-none focus:outline focus:outline-offset-0 focus:outline-blue-500 bg-slate-50 placeholder:text-slate-400 
-                    ${emailErr.trim() !== '' ? 'outline-1 outline-red-500 outline-offset-0 placeholder:text-red-500 bg-red-50' : ''}`}
-                        placeholder="Enter your password..." />
-                    {passwordErr.trim() !== '' &&
-                        <span className="text-xs font-semibold text-red-500">{passwordErr}</span>
-                    }
-                    <button className='absolute duration-200 ease-in outline-none right-4 text-slate-500 hover:text-blue-500 focus:text-blue-500' type='button' onClick={() => setShowPassword(!showPassword)}>
+                        name='password'
+                        id='password'
+                        placeholder='Enter your password...'
+                        onError={passwordErr.trim() !== '' ? true : false} />
+                    <button className={`absolute duration-200 ease-in outline-none right-4 hover:text-blue-500 focus:text-blue-500 ${passwordErr.trim() !== '' ? 'text-red-500 duration-0' : 'text-slate-500'}`} type='button' onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? <EyeClosed size="20" /> : <EyeOpen size="20" />}
                     </button>
                 </div>
+                {passwordErr.trim() !== '' &&
+                    <span className="text-xs font-semibold text-red-500">{passwordErr}</span>
+                }
             </div>
-            <div className="flex gap-2">
+            <div className="relative flex gap-2">
                 <input type="checkbox" name="rememberMe" id="rememberMe" onClick={() => setRememberMe(!rememberMe)} />
                 <label htmlFor="rememberMe" className='text-xs font-semibold uppercase text-slate-500'>Remember Me?</label>
             </div>
