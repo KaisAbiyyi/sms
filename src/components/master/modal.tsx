@@ -5,7 +5,7 @@ import DownloadIcon from "@/components/icons/DownloadIcon"
 import { XIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { ChangeEvent, useEffect, useState } from "react"
-import InputModel from "../elements/InputModel"
+import InputModel from "../element/InputModel"
 
 export type ModalFieldsTypes = {
     name: string

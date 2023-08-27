@@ -1,6 +1,6 @@
 "use client"
 
-import InputModel from "@/components/elements/InputModel"
+import InputModel from "@/components/element/InputModel"
 import CheckIcon from "@/components/icons/CheckIcon"
 import CircleX from "@/components/icons/CircleX"
 import ExternalLinkIcon from "@/components/icons/ExternalLinkIcon"

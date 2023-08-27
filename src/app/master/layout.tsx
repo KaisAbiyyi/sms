@@ -3,7 +3,7 @@
 import MasterNavbar from "@/components/master/navbar";
 import MasterSidebar from "@/components/master/sidebar";
 import { usePathname } from "next/navigation";
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function MasterLayouts({
     children,

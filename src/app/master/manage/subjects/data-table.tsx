@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table"
 
 import { ChangeEvent, useState } from "react"
-import InputModel from "@/components/elements/InputModel"
+import InputModel from "@/components/element/InputModel"
 
 
 interface DataTableProps<TData, TValue> {

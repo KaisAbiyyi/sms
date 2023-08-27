@@ -4,7 +4,21 @@ import { useRouter } from 'next/navigation'
 import { ChangeEvent, FormEvent, useState } from "react"
 import EyeOpen from '../icons/EyeOpen';
 import EyeClosed from '../icons/EyeClosed';
-import InputModel from '../elements/InputModel';
+import InputModel from '../element/InputModel';
+import {
+    BGRed,
+    alertBadge,
+    heading2,
+    heading4,
+    inputClass,
+    inputLabel,
+    inputOnError,
+    inputShowPasswordBtn,
+    inputShowPasswordBtnErr,
+    inputWrapper,
+    inputWrapperInverted,
+    primaryButton
+} from '../ElementClass';
 
 
 export default function LoginForm(props: any) {
@@ -58,45 +72,48 @@ export default function LoginForm(props: any) {
     }
     return <>
         <form className="flex flex-col justify-center w-full gap-6 p-4 lg:w-1/2" action={loginHandler}>
-            <div className="flex flex-col gap-2">
-                <h1 className="text-xl font-bold text-slate-700">Welcome Back!</h1>
-                <span className="text-sm font-semibold text-slate-600">Log in now to continue.</span>
-                <span className={`px-4 font-bold bg-red-500 rounded-lg text-slate-100 ease-in duration-200 text-center ${generalErr !== '' ? 'py-2' : 'p-0'}`}>{generalErr}</span>
+            <div className={inputWrapper}>
+                <h2 className={heading2}>Welcome Back!</h2>
+                <span className={heading4}>Log in now to continue.</span>
+                <span
+                    className={`${alertBadge} ${BGRed} ${generalErr === '' ? '!p-0' : ''}`}>
+                    {generalErr}
+                </span>
             </div>
-            <div className="flex flex-col gap-2">
-                <label htmlFor="email" className="text-xs font-semibold uppercase text-slate-500">Email</label>
-                <InputModel
-                    type='email'
-                    name='email'
-                    id='email'
+            <div className={inputWrapper}>
+                <label htmlFor="email" className={inputLabel}>Email</label>
+                <input
+                    type="email"
+                    name="email"
+                    id="email"
                     placeholder='Enter your email...'
-                    onError={emailErr.trim() !== '' ? true : false} />
+                    className={`${inputClass} ${emailErr.trim() !== '' ? inputOnError : ''}`} />
                 {emailErr.trim() !== '' &&
-                    <span className="text-xs font-semibold text-red-500">{emailErr}</span>
+                    <span className="text-sm font-semibold text-red-500">{emailErr}</span>
                 }
             </div>
-            <div className="flex flex-col gap-2">
-                <label htmlFor="password" className="text-xs font-semibold uppercase text-slate-500">password</label>
+            <div className={inputWrapper}>
+                <label htmlFor="password" className={inputLabel}>password</label>
                 <div className="relative flex items-center">
-                    <InputModel
-                        type={showPassword ? 'text' : 'password'}
-                        name='password'
-                        id='password'
+                    <input
+                        type={`${showPassword ? 'text':'password'}`}
+                        name="password"
+                        id="password"
                         placeholder='Enter your password...'
-                        onError={passwordErr.trim() !== '' ? true : false} />
-                    <button className={`absolute duration-200 ease-in outline-none right-4 hover:text-blue-500 focus:text-blue-500 ${passwordErr.trim() !== '' ? 'text-red-500 duration-0' : 'text-slate-500'}`} type='button' onClick={() => setShowPassword(!showPassword)}>
+                        className={`${inputClass} ${passwordErr.trim() !== '' ? inputOnError : ''}`} />
+                    <button className={`${inputShowPasswordBtn} ${passwordErr.trim() !== '' ? inputShowPasswordBtnErr : ''}`} type='button' onClick={() => setShowPassword(!showPassword)}>
                         {showPassword ? <EyeClosed size="20" /> : <EyeOpen size="20" />}
                     </button>
                 </div>
                 {passwordErr.trim() !== '' &&
-                    <span className="text-xs font-semibold text-red-500">{passwordErr}</span>
+                    <span className="text-sm font-semibold text-red-500">{passwordErr}</span>
                 }
             </div>
-            <div className="relative flex gap-2">
+            <div className={inputWrapperInverted}>
                 <input type="checkbox" name="rememberMe" id="rememberMe" onClick={() => setRememberMe(!rememberMe)} />
-                <label htmlFor="rememberMe" className='text-xs font-semibold uppercase text-slate-500'>Remember Me?</label>
+                <label htmlFor="rememberMe" className={inputLabel}>Remember Me?</label>
             </div>
-            <button type="submit" className="px-4 py-2 font-semibold duration-200 ease-in bg-blue-500 border-0 rounded-lg outline-none cursor-pointer text-slate-100 hover:bg-blue-400 active:bg-blue-400 focus:bg-blue-400">LOGIN</button>
+            <button type="submit" className={primaryButton}>LOGIN</button>
         </form>
     </>
 }

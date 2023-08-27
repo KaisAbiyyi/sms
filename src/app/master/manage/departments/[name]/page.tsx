@@ -21,14 +21,18 @@ export default async function Page({ params }: { params: { name: string } }) {
                     <span className="font-semibold capitalize">{department?.fullName}</span>
                     <span className="font-bold uppercase">({department?.name})</span>
                 </div>
-                <div className="flex flex-col gap-4 p-4 rounded-lg shadow-sm bg-slate-50">
+                <div className="flex flex-col gap-6 p-4 rounded-lg shadow-sm bg-slate-50">
                     <div className="flex flex-col gap-2">
-                        <label className="text-xs font-semibold uppercase text-slate-500" htmlFor="headDepartment">Head Department</label>
-                        <span>Lorem ipsum dolor sit amet.</span>
+                        <h6 className="text-lg font-semibold uppercase text-slate-600">Principal</h6>
+                        <p className="m-0 text-base text-slate-400">Lorem ipsum dolor sit amet.</p>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <label className="text-xs font-semibold uppercase text-slate-500" htmlFor="headDepartment">Deputy Head Department</label>
-                        <span>Lorem ipsum dolor sit amet.</span>
+                        <h6 className="text-lg font-semibold uppercase text-slate-600">Head Department</h6>
+                        <p className="m-0 text-base text-slate-400">Lorem ipsum dolor sit amet.</p>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <h6 className="text-lg font-semibold uppercase text-slate-600">Deputy Head Department</h6>
+                        <p className="m-0 text-base text-slate-400">Lorem ipsum dolor sit amet.</p>
                     </div>
                 </div>
             </div>

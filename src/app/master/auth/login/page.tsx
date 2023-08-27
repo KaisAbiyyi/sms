@@ -1,3 +1,7 @@
+import {
+    heading1,
+    heading5
+} from "@/components/ElementClass";
 import LoginForm from "@/components/auth/login";
 import { prisma } from "@/db"
 import { Metadata } from "next"
@@ -17,8 +21,8 @@ export default async function GeneralLogin() {
             <div className="flex flex-col md:flex-row lg:flex-row mx-4 w-auto lg:w-[1000px] gap-4 p-4 rounded-xl h-[600px] drop-shadow-md bg-slate-100">
                 <div className="flex items-center w-full gap-2 p-5 bg-blue-500 rounded-lg lg:flex-col lg:h-full md:flex-col md:h-full h-1/4 lg:w-1/2">
                     <div className="flex flex-col">
-                        <h1 className="text-3xl font-bold text-center text-blue-100">SmartSchool</h1>
-                        <span className="text-sm font-semibold text-center text-blue-300">{quote?.quote}</span>
+                        <h1 className={heading1 + ' !text-center font-bold !text-slate-100'}>SmartSchool</h1>
+                        <span className={heading5 + ' !text-center !text-blue-300'}>{quote?.quote}</span>
                     </div>
                     <img src="/assets/images/study.png" className="object-contain w-1/4 h-full lg:w-full md:w-full" alt="" />
                 </div>

@@ -21,8 +21,9 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-import { ChangeEvent, useState } from "react"
-import InputModel from "@/components/elements/InputModel"
+import { ChangeEvent, Suspense, useState } from "react"
+import InputModel from "@/components/element/InputModel"
+import TableLoading from "@/components/loading/table"
 
 
 interface DataTableProps<TData, TValue> {
@@ -84,67 +85,69 @@ export function DataTable<TData, TValue>({
                     </div>
                 </div>
             </div>
-            <div className="flex flex-col overflow-hidden rounded-lg shadow bg-slate-50">
-                <div className="flex justify-between p-2">
-                    <h1 className="font-semibold text-md text-slate-700">List of all Departments</h1>
-                    <div className="flex gap-2">
-                        <input
-                            type="button"
-                            value="<"
-                            className={`px-2 font-bold rounded-lg cursor-pointer text-slate-100 ${!table.getCanPreviousPage() ? 'bg-blue-300' : 'bg-blue-500 ease-in duration-200 hover:bg-blue-400'}`}
-                            onClick={() => table.previousPage()} />
-                        <input
-                            type="button"
-                            value=">"
-                            className={`px-2 font-bold rounded-lg cursor-pointer text-slate-100 ${!table.getCanNextPage() ? 'bg-blue-300' : 'bg-blue-500 ease-in duration-200 hover:bg-blue-400'}`}
-                            onClick={() => table.nextPage()} />
+            <Suspense fallback={<TableLoading />}>
+                <div className="flex flex-col overflow-hidden rounded-lg shadow bg-slate-50">
+                    <div className="flex justify-between p-2">
+                        <h1 className="font-semibold text-md text-slate-700">List of all Departments</h1>
+                        <div className="flex gap-2">
+                            <input
+                                type="button"
+                                value="<"
+                                className={`px-2 font-bold rounded-lg cursor-pointer text-slate-100 ${!table.getCanPreviousPage() ? 'bg-blue-300' : 'bg-blue-500 ease-in duration-200 hover:bg-blue-400'}`}
+                                onClick={() => table.previousPage()} />
+                            <input
+                                type="button"
+                                value=">"
+                                className={`px-2 font-bold rounded-lg cursor-pointer text-slate-100 ${!table.getCanNextPage() ? 'bg-blue-300' : 'bg-blue-500 ease-in duration-200 hover:bg-blue-400'}`}
+                                onClick={() => table.nextPage()} />
+                        </div>
+                    </div>
+                    <div className="border">
+                        <Table>
+                            <TableHeader>
+                                {table.getHeaderGroups().map((headerGroup) => (
+                                    <TableRow key={headerGroup.id} className="bg-slate-200 hover:bg-slate-200">
+                                        {headerGroup.headers.map((header) => {
+                                            return (
+                                                <TableHead key={header.id} className="font-bold text-slate-700">
+                                                    {header.isPlaceholder
+                                                        ? null
+                                                        : flexRender(
+                                                            header.column.columnDef.header,
+                                                            header.getContext()
+                                                        )}
+                                                </TableHead>
+                                            )
+                                        })}
+                                    </TableRow>
+                                ))}
+                            </TableHeader>
+                            <TableBody>
+                                {table.getRowModel().rows?.length ? (
+                                    table.getRowModel().rows.map((row) => (
+                                        <TableRow
+                                            key={row.id}
+                                            data-state={row.getIsSelected() && "selected"}
+                                        >
+                                            {row.getVisibleCells().map((cell) => (
+                                                <TableCell key={cell.id}>
+                                                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                                            No results.
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </TableBody>
+                        </Table>
                     </div>
                 </div>
-                <div className="border">
-                    <Table>
-                        <TableHeader>
-                            {table.getHeaderGroups().map((headerGroup) => (
-                                <TableRow key={headerGroup.id} className="bg-slate-200 hover:bg-slate-200">
-                                    {headerGroup.headers.map((header) => {
-                                        return (
-                                            <TableHead key={header.id} className="font-bold text-slate-700">
-                                                {header.isPlaceholder
-                                                    ? null
-                                                    : flexRender(
-                                                        header.column.columnDef.header,
-                                                        header.getContext()
-                                                    )}
-                                            </TableHead>
-                                        )
-                                    })}
-                                </TableRow>
-                            ))}
-                        </TableHeader>
-                        <TableBody>
-                            {table.getRowModel().rows?.length ? (
-                                table.getRowModel().rows.map((row) => (
-                                    <TableRow
-                                        key={row.id}
-                                        data-state={row.getIsSelected() && "selected"}
-                                    >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell key={cell.id}>
-                                                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))
-                            ) : (
-                                <TableRow>
-                                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                                        No results.
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </div>
-            </div>
+            </Suspense>
         </div>
     )
 }
