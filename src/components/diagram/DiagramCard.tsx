@@ -1,6 +1,7 @@
 "use client"
 
 import Image from "next/image"
+import { scrollbarClass } from "../ElementClass"
 
 export type DiagramCardProps = {
     id: string | number | undefined
@@ -30,27 +31,25 @@ const DiagramCard = (data: Array<DiagramCardProps>, id: string | number | undefi
     return data
         .filter(item => item.parent === id)
         .map((item: DiagramCardProps) => (
-            <>
-                <div className="flex flex-col items-center flex-grow gap-8" key={item.id}>
-                    <div className="flex gap-8 p-3 rounded-lg shadow w-72 bg-slate-50">
-                        <div className="relative w-24 overflow-hidden rounded-lg bg-slate-200">
-                            {item?.photo &&
-                                <Image src={item?.photo} alt={item?.name} fill style={{ objectFit: 'cover' }} />
-                            }
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <p className="m-0 text-xs font-semibold text-slate-600">{item?.name}</p>
-                            <p className="m-0 text-xs font-semibold text-slate-500">{item?.title}</p>
-                            <p className="m-0 text-xs font-medium text-slate-500">{item?.phone}</p>
-                            <p className="m-0 text-xs font-medium text-slate-500">{item?.mail}</p>
-                        </div>
+            <div className="flex flex-col items-center flex-grow gap-8" key={item.id}>
+                <div className="flex gap-8 p-3 rounded-lg shadow w-72 bg-slate-50">
+                    <div className="relative w-24 overflow-hidden rounded-lg bg-slate-200">
+                        {item?.photo &&
+                            <Image src={item?.photo} alt={item?.name} fill style={{ objectFit: 'cover' }} />
+                        }
                     </div>
-                    <div className={`flex gap-8 relative w-full ${LastChildrenIds.includes(item.id) ? 'flex-col pl-8' : ''}`}>
-                        {LastChildrenIds.includes(item.parent)}
-                        {DiagramCard(data, item.id)}
+                    <div className="flex flex-col gap-1">
+                        <p className="m-0 text-xs font-semibold text-slate-600">{item?.name}</p>
+                        <p className="m-0 text-xs font-semibold text-slate-500">{item?.title}</p>
+                        <p className="m-0 text-xs font-medium text-slate-500">{item?.phone}</p>
+                        <p className="m-0 text-xs font-medium text-slate-500">{item?.mail}</p>
                     </div>
                 </div>
-            </>
+                <div className={`flex gap-8 relative w-full ${LastChildrenIds.includes(item.id) ? 'flex-col pl-8' : ''}`}>
+                    {LastChildrenIds.includes(item.parent)}
+                    {DiagramCard(data, item.id)}
+                </div>
+            </div>
         ))
 }
 
@@ -60,7 +59,7 @@ export default function DiagramOrganization(props: DiagramProps) {
 
     return (
         <>
-            <div className="relative flex flex-col items-center flex-grow gap-8 overflow-scroll w-96 h-96 bg-slate-500">
+            <div className={"relative flex flex-col items-center flex-grow gap-8 overflow-x-scroll " + scrollbarClass}>
                 <div className="flex gap-8 p-3 rounded-lg shadow bg-slate-50">
                     <div className="relative w-24 overflow-hidden rounded-lg bg-slate-200">
                         {MainCard?.photo &&

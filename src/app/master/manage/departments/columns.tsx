@@ -1,6 +1,6 @@
 "use client"
 
-import InputModel from "@/components/element/InputModel"
+import { inputClass } from "@/components/ElementClass"
 import CheckIcon from "@/components/icons/CheckIcon"
 import CircleX from "@/components/icons/CircleX"
 import ExternalLinkIcon from "@/components/icons/ExternalLinkIcon"
@@ -82,7 +82,13 @@ export const columns: ColumnDef<Department>[] = [
                 <>
                     {editMode ? (
                         <form action={editFullName} className="flex gap-4">
-                            <InputModel type="text" name="fullName" id="fullName" defaultValue={value} placeholder="Enter department fullname..." />
+                            <input
+                                type="text"
+                                name="fullName"
+                                id="fullName"
+                                defaultValue={value}
+                                className={inputClass}
+                                placeholder="Enter department fullname..." />
                             <div className="flex gap-2">
                                 <button
                                     className="p-2 duration-200 ease-in bg-red-500 rounded-lg shadow text-slate-100 h-fit hover:bg-red-400"

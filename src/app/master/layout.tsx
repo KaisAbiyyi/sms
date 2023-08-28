@@ -1,5 +1,6 @@
 "use client"
 
+import { scrollbarClass } from "@/components/ElementClass";
 import MasterNavbar from "@/components/master/navbar";
 import MasterSidebar from "@/components/master/sidebar";
 import { usePathname } from "next/navigation";
@@ -10,17 +11,19 @@ export default function MasterLayouts({
 }: {
     children: React.ReactNode
 }) {
-    const isNotLogin = usePathname() !== '/master/auth/login'
+    const loginPage = usePathname() !== '/master/auth/login'
     return (
         <section className="flex w-screen h-screen gap-8 bg-slate-100">
-            {isNotLogin &&
+            {loginPage &&
                 <MasterSidebar />
             }
-            <div className={`${isNotLogin ? 'w-5/6 flex flex-col gap-6 pr-16' : 'w-full'}`}>
-                {isNotLogin &&
+            <div className={`${loginPage ? 'flex flex-col w-5/6 gap-8' : 'w-full'}`}>
+                {loginPage &&
                     <MasterNavbar />
                 }
-                {children}
+                <div className={'flex-grow pb-8 pr-8 gap-8 flex flex-col overflow-y-scroll ' + scrollbarClass}>
+                    {children}
+                </div>
             </div>
         </section>
     )

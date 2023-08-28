@@ -41,12 +41,12 @@ export default function MasterNavbar() {
     }
 
     return <>
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-20 pr-8">
             <h1 className="text-lg font-semibold capitalize text-slate-700">{pathName}</h1>
             <div className="relative flex flex-col w-10 h-10" ref={dropdownRef}>
                 <button className="absolute inset-0 w-full h-10 rounded-full bg-slate-200" onClick={toggleDropdown}></button>
                 {profileDropdown &&
-                    <div className="absolute right-0 flex flex-col gap-2 p-2 translate-y-6 rounded-lg bg-slate-50 drop-shadow -bottom-full">
+                    <div className="absolute right-0 z-50 flex flex-col gap-2 p-2 translate-y-6 rounded-lg bg-slate-50 drop-shadow -bottom-full">
                         <button className="px-4 py-2 rounded-lg hover:bg-slate-100" onClick={logoutHandler}>LOGOUT</button>
                     </div>
                 }

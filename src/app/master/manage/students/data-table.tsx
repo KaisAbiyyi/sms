@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/table"
 
 import { ChangeEvent, useState } from "react"
-import InputModel from "@/components/element/InputModel"
+import { inputClass } from "@/components/ElementClass"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -75,13 +75,14 @@ export function DataTable<TData, TValue>({
                 <div className="flex w-10/12 gap-4 p-4 rounded-lg shadow bg-slate-50">
                     <div className="flex flex-col w-6/12 gap-2">
                         <label htmlFor="searchStudents" className="text-xs font-semibold uppercase text-slate-500">Who are you looking for?</label>
-                        <InputModel
+                        <input
                             type="text"
                             name="searchStudents"
                             id="searchStudents"
                             placeholder="Search student name, number, class, department, etc."
                             value={globalFilter ?? ''}
-                            onChange={(event) => table.setGlobalFilter(event.target.value)} />
+                            onChange={(event) => table.setGlobalFilter(event.target.value)}
+                            className={inputClass} />
                     </div>
                     <div className="flex flex-col w-3/12 gap-2">
                         <label htmlFor="classes" className="text-xs font-semibold uppercase text-slate-500">Class</label>

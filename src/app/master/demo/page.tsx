@@ -135,7 +135,6 @@ export default function DemoPage() {
     return (<>
         <div className="flex flex-col gap-2">
             <DiagramCard data={data} />
-            <div className="p-2 bg-slate-600"></div>
             <input type="text" name="" className={`${inputClass}`} placeholder="asu kamuh" id="" />
         </div>
     </>)
