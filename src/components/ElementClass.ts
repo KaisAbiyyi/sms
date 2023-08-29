@@ -1,5 +1,5 @@
 //Basic
-export const scrollbarClass = 'scrollbar scrollbar-w-3 scrollbar-h-3 scrollbar-corner-black scrollbar-track-slate-300 scrollbar-thumb-slate-500'
+export const scrollbarClass = 'scrollbar scrollbar-w-3 scrollbar-h-3 scrollbar-thumb-rounded-full scrollbar-track-rounded-full scrollbar-track-slate-300 scrollbar-thumb-slate-500'
 
 //BG Colors
 export const BGRed = 'bg-red-500'
