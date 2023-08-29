@@ -43,27 +43,25 @@ const DiagramCard = (data: Array<DiagramCardProps>, id: string | number | undefi
         .map(item => item?.id)
         .slice(1, -1)
 
-    console.log(data.filter(item => item.parent === id && item.id !== id && data.filter(child => child.parent === item.id).length === 1))
-
     return data
         .filter(item => item.parent === id)
         .map((item: DiagramCardProps) => (
-            <div className="flex h-fit">
+            <div className="relative flex">
                 {LastChildrenIds.includes(item.id) &&
                     <>
-                        <div className="w-1 ml-8 bg-slate-300"></div>
+                        <div className="w-1 h-40 ml-8 translate-x-1 bg-slate-300"></div>
                     </>
                 }
                 {LastChildrenIds.includes(item.parent) &&
-                    <div className="flex flex-col justify-center">
-                        <div className="w-16 h-1 bg-slate-300"></div>
+                    <div className="z-0 flex flex-col justify-start">
+                        <div className="w-16 h-32 -translate-y-1/2 border border-t-0 border-b-4 border-l-4 border-r-0 border-slate-300 bg-slate-100 "></div>
                     </div>
                 }
                 <div className={`flex flex-col items-center justify-start h-fit`} key={item.id} >
-                    <div className="relative flex h-32 gap-3 p-3 rounded-lg shadow w-72 bg-slate-50">
+                    <div className="relative z-10 flex h-32 gap-3 p-3 rounded-lg shadow w-72 bg-slate-50">
                         {LastChildrenIds.includes(item.id) &&
                             <>
-                                <div className="absolute top-0 left-0 w-8 h-1 -translate-x-full bg-slate-300"></div>
+                                <div className="absolute top-0 left-0 w-8 h-8 -translate-x-full border border-t-0 border-b-4 border-l-0 border-r-0 border-slate-300 bg-slate-100"></div>
                             </>
                         }
                         {sliced.includes(item.id) &&
@@ -95,7 +93,7 @@ const DiagramCard = (data: Array<DiagramCardProps>, id: string | number | undefi
                         </>
                         : ''
                     }
-                    <div className={`flex relative  w-full ${LastChildrenIds.includes(item.id) ? 'flex-col items-center mt-8' : ''}`}>
+                    <div className={`flex relative  w-full ${LastChildrenIds.includes(item.id) ? 'flex-col items-center' : ''}`}>
                         {DiagramCard(data, item.id)}
                     </div>
                 </div >
@@ -109,7 +107,7 @@ export default function DiagramOrganization(props: DiagramProps) {
 
     return (
         <>
-            <div className={"flex flex-col w-full overflow-auto " + scrollbarClass}>
+            <div className={"flex flex-col w-full h-1/2 overflow-auto " + scrollbarClass}>
                 <div className="p-4 m-auto">
                     <div className={"relative flex flex-col w-auto whitespace-nowrap flex-nowrap"}>
                         <div className="relative flex gap-3 p-3 m-auto rounded-lg shadow w-72 bg-slate-50">

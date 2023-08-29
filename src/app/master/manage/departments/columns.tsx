@@ -81,15 +81,15 @@ export const columns: ColumnDef<Department>[] = [
             return (
                 <>
                     {editMode ? (
-                        <form action={editFullName} className="flex gap-4">
+                        <form action={editFullName} className="w-full h-full">
                             <input
                                 type="text"
                                 name="fullName"
                                 id="fullName"
                                 defaultValue={value}
-                                className={inputClass}
+                                className="w-full h-full px-2 uppercase bg-slate-200"
                                 placeholder="Enter department fullname..." />
-                            <div className="flex gap-2">
+                            {/* <div className="flex gap-2">
                                 <button
                                     className="p-2 duration-200 ease-in bg-red-500 rounded-lg shadow text-slate-100 h-fit hover:bg-red-400"
                                     onClick={() => setEditMode(false)}
@@ -103,14 +103,11 @@ export const columns: ColumnDef<Department>[] = [
                                     title="Confirm">
                                     <CheckIcon size="18" />
                                 </button>
-                            </div>
+                            </div> */}
                         </form>
                     ) : (
-                        <div className="flex gap-4">
+                        <div className="flex items-center w-full h-full gap-4 px-2" onClick={() => setEditMode(!editMode)}>
                             <span className="uppercase">{value}</span>
-                            <button type="button" className="duration-200 ease-in text-slate-400 hover:text-blue-500" onClick={() => setEditMode(!editMode)}>
-                                <PenIcon size="18" />
-                            </button >
                         </div>
                     )
                     }
