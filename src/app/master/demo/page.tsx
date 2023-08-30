@@ -2,6 +2,14 @@
 
 import { inputClass } from "@/components/ElementClass";
 import DiagramCard, { DiagramCardProps } from "@/components/diagram/DiagramCard";
+import TableCell from "@/components/tables/TableCell";
+
+interface dataTableTypes {
+    id: number,
+    name: string,
+    email: string,
+    address: string
+}
 
 export default function DemoPage() {
     const data: Array<DiagramCardProps> = [
@@ -304,10 +312,92 @@ export default function DemoPage() {
         }
     ];
 
+    const rawData: Array<dataTableTypes> = [
+        {
+            id: 1,
+            name: "John Doe",
+            address: "123 Main St, Cityville, USA",
+            email: "john.doe@example.com"
+        },
+        {
+            id: 2,
+            name: "Jane Smith",
+            address: "456 Elm Ave, Townsville, USA",
+            email: "jane.smith@example.com"
+        },
+        {
+            id: 3,
+            name: "Michael Johnson",
+            address: "789 Oak Rd, Villageland, USA",
+            email: "michael.johnson@example.com"
+        },
+        {
+            id: 4,
+            name: "Emily Williams",
+            address: "101 Pine Lane, Hamletown, USA",
+            email: "emily.williams@example.com"
+        },
+        {
+            id: 5,
+            name: "David Brown",
+            address: "222 Maple Street, Riverside, USA",
+            email: "david.brown@example.com"
+        },
+        {
+            id: 6,
+            name: "Olivia Taylor",
+            address: "333 Cedar Ave, Lakeside, USA",
+            email: "olivia.taylor@example.com"
+        },
+        {
+            id: 7,
+            name: "William Wilson",
+            address: "444 Birch Road, Mountainside, USA",
+            email: "william.wilson@example.com"
+        },
+        {
+            id: 8,
+            name: "Sophia Martinez",
+            address: "555 Redwood Drive, Valleyview, USA",
+            email: "sophia.martinez@example.com"
+        },
+        {
+            id: 9,
+            name: "James Anderson",
+            address: "666 Elm Street, Meadowville, USA",
+            email: "james.anderson@example.com"
+        },
+        {
+            id: 10,
+            name: "Ava Rodriguez",
+            address: "777 Oak Avenue, Hilltop, USA",
+            email: "ava.rodriguez@example.com"
+        }
+    ];
+
+    const dataTable = rawData.slice().sort((a, b) => a.name.localeCompare(b.name))
+
+
     return (<>
-        <div className="flex flex-col gap-2">
-            <DiagramCard data={data} />
-            <input type="text" name="" className={`${inputClass}`} placeholder="asu kamuh" id="" />
+        <div className="p-4 rounded-lg shadow-sm bg-slate-50">
+            <table className="w-full">
+                <thead>
+                    <tr>
+                        <th className="p-4 border text-start bg-slate-100">Name</th>
+                        <th className="p-4 border text-start bg-slate-100">Email</th>
+                        <th className="p-4 border text-start bg-slate-100">Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {dataTable.map((item) => (
+                        <tr key={item.id} className="hover:bg-slate-100">
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell>{item.email}</TableCell>
+                            <TableCell>{item.name}</TableCell>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
         </div>
     </>)
 }

@@ -1,7 +1,7 @@
 import CreateModal, { ModalFieldsTypes } from "@/components/master/modal";
 import { Metadata } from "next";
 import { DataTable } from "./data-table";
-import { columns } from "./columns";
+import { SubjectType, columns } from "./columns";
 import { prisma } from "@/db";
 
 export const metadata: Metadata = {
@@ -33,7 +33,7 @@ export default async function MasterManageSubjects() {
                     id: "classes",
                     filteredCheckbox: true,
                     selectboxCreateNew: false,
-                    filteredFor:null,
+                    filteredFor: null,
                     data: classes,
                     type: "checkbox"
                 },
@@ -43,7 +43,7 @@ export default async function MasterManageSubjects() {
                     data: null,
                     filteredCheckbox: false,
                     type: "text",
-                    filteredFor:null,
+                    filteredFor: null,
                     selectboxCreateNew: false
                 },
                 {
@@ -52,22 +52,25 @@ export default async function MasterManageSubjects() {
                     data: teachers,
                     filteredCheckbox: false,
                     type: "selectbox",
-                    filteredFor:null,
+                    filteredFor: null,
                     selectboxCreateNew: false
                 },
             ]
         }
     ]
     const departments = await prisma.department.findMany()
-    const subjects = (await prisma.subject.findMany({
+    const subjects: Array<SubjectType> = (await prisma.subject.findMany({
         include: {
-            Subject_Detail: true
+            Subject_Detail: {
+                include: {
+                    Teacher: true
+                }
+            }
         }
     })).map((item: any) => {
         return {
             name: item.name,
             classes: item.Subject_Detail,
-            departments
         }
     })
     return (

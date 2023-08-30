@@ -82,7 +82,7 @@ export function DataTable<TData, TValue>({
                             value={globalFilter ?? ''}
                             onChange={(event) => table.setGlobalFilter(event.target.value)} />
                     </div>
-                    <div className="flex flex-col w-4/12 gap-2">
+                    {/* <div className="flex flex-col w-4/12 gap-2">
                         <label htmlFor="subjects" className="text-xs font-semibold uppercase text-slate-500">Subject</label>
                         <select
                             name="subjects"
@@ -96,7 +96,7 @@ export function DataTable<TData, TValue>({
                                 <option value={subject.id} className="uppercase" key={subject.id}>{subject.name}</option>
                             ))}
                         </select>
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <div className="flex flex-col overflow-hidden rounded-lg shadow bg-slate-50">

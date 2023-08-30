@@ -105,10 +105,10 @@ export function DataTable<TData, TValue>({
                         <Table>
                             <TableHeader>
                                 {table.getHeaderGroups().map((headerGroup) => (
-                                    <TableRow key={headerGroup.id} className="bg-slate-200 hover:bg-slate-200">
+                                    <TableRow key={headerGroup.id} className="border bg-slate-100 border-slate-100 hover:bg-slate-200">
                                         {headerGroup.headers.map((header) => {
                                             return (
-                                                <TableHead key={header.id} className="font-bold border border-slate-300 text-slate-700">
+                                                <TableHead key={header.id} className="font-bold text-slate-700">
                                                     {header.isPlaceholder
                                                         ? null
                                                         : flexRender(
@@ -129,7 +129,7 @@ export function DataTable<TData, TValue>({
                                             data-state={row.getIsSelected() && "selected"}
                                         >
                                             {row.getVisibleCells().map((cell) => (
-                                                <TableCell key={cell.id} className="h-12 p-0 border border-slate-300">
+                                                <TableCell key={cell.id} className="border">
                                                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                                 </TableCell>
                                             ))}
@@ -137,7 +137,7 @@ export function DataTable<TData, TValue>({
                                     ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={columns.length} className="h-24 text-center border border-slate-300">
+                                        <TableCell colSpan={columns.length} className="h-24 text-center border">
                                             No results.
                                         </TableCell>
                                     </TableRow>

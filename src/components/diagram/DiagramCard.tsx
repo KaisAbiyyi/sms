@@ -46,7 +46,7 @@ const DiagramCard = (data: Array<DiagramCardProps>, id: string | number | undefi
     return data
         .filter(item => item.parent === id)
         .map((item: DiagramCardProps) => (
-            <div className="relative flex">
+            <div className="relative flex" key={item.id}>
                 {LastChildrenIds.includes(item.id) &&
                     <>
                         <div className="w-1 h-40 ml-8 translate-x-1 bg-slate-300"></div>
@@ -57,7 +57,7 @@ const DiagramCard = (data: Array<DiagramCardProps>, id: string | number | undefi
                         <div className="w-16 h-32 -translate-y-1/2 border border-t-0 border-b-4 border-l-4 border-r-0 border-slate-300 bg-slate-100 "></div>
                     </div>
                 }
-                <div className={`flex flex-col items-center justify-start h-fit`} key={item.id} >
+                <div className={`flex flex-col items-center justify-start h-fit`}  >
                     <div className="relative z-10 flex h-32 gap-3 p-3 rounded-lg shadow w-72 bg-slate-50">
                         {LastChildrenIds.includes(item.id) &&
                             <>
@@ -69,7 +69,7 @@ const DiagramCard = (data: Array<DiagramCardProps>, id: string | number | undefi
                         }
                         <div className="relative w-24 overflow-hidden rounded-lg bg-slate-200">
                             {item?.photo &&
-                                <Image src={item?.photo} alt={item?.name} fill style={{ objectFit: 'cover' }} />
+                                <Image src={item?.photo} alt={item?.name} fill sizes="100" style={{ objectFit: 'cover' }} />
                             }
                         </div>
                         <div className="flex flex-col gap-1">
@@ -107,13 +107,13 @@ export default function DiagramOrganization(props: DiagramProps) {
 
     return (
         <>
-            <div className={"flex flex-col w-full h-1/2 overflow-auto " + scrollbarClass}>
+            <div className={"flex flex-col w-full overflow-auto " + scrollbarClass}>
                 <div className="p-4 m-auto">
                     <div className={"relative flex flex-col w-auto whitespace-nowrap flex-nowrap"}>
                         <div className="relative flex gap-3 p-3 m-auto rounded-lg shadow w-72 bg-slate-50">
                             <div className="relative w-24 overflow-hidden rounded-lg bg-slate-200">
                                 {MainCard?.photo &&
-                                    <Image src={MainCard?.photo} alt={MainCard?.name} fill style={{ objectFit: 'cover' }} />
+                                    <Image src={MainCard?.photo} alt={MainCard?.name} sizes="100" fill style={{ objectFit: 'cover' }} />
                                 }
                             </div>
                             <div className="flex flex-col gap-1">

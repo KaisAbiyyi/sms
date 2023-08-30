@@ -45,6 +45,7 @@ export const sidebarDropdownLink = 'flex items-center gap-2 px-3 py-1 font-semib
 
 
 //Buttons
+export const whiteButton = 'px-4 py-2 font-semibold duration-200 ease-in bg-slate-100 border-0 rounded-lg outline-none cursor-pointer text-slate-400 hover:bg-slate-200 active:bg-slate-200 focus:bg-slate-200'
 export const primaryButton = 'px-4 py-2 font-semibold duration-200 ease-in bg-blue-500 border-0 rounded-lg outline-none cursor-pointer text-slate-100 hover:bg-blue-400 active:bg-blue-400 focus:bg-blue-400'
 export const successButton = 'w-3/12 px-4 py-2 text-sm font-semibold duration-200 ease-in bg-green-600 border-0 rounded-lg outline-none cursor-pointer text-slate-100 hover:bg-green-500 active:bg-green-500 focus:bg-green-500A'
 export const dangerButton = 'flex items-center justify-center px-4 py-2 text-sm text-center duration-200 ease-in bg-red-400 border-0 rounded-lg outline-none cursor-pointer text-slate-100 hover:bg-red-300 active:bg-red-300 focus:bg-red-300'

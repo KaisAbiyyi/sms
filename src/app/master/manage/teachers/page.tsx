@@ -11,14 +11,20 @@ export const metadata: Metadata = {
 export default async function MasterManageTeachers() {
     const teachers = (await prisma.teacher.findMany({
         include: {
-            User: true
+            User: true,
+            Subject_Detail: {
+                include: {
+                    Subject: true
+                }
+            }
         }
     })).map((item: any) => {
         return {
             teacherNumber: item.teacherNumber,
             name: item.name,
             email: item.User.email,
-            username: item.User.username
+            username: item.User.username,
+            subjects: item.Subject_Detail.map((item: any) => ({ ...item, subjectName: item.Subject.name }))
         }
     })
     const subjects = await prisma.subject.findMany()
@@ -31,14 +37,18 @@ export default async function MasterManageTeachers() {
                     label: 'teacher number',
                     type: 'text',
                     data: null,
-                    selectboxCreateNew: false
+                    selectboxCreateNew: false,
+                    filteredCheckbox: false,
+                    filteredFor: null
                 },
                 {
                     id: "name",
                     label: "name",
                     type: 'text',
                     data: null,
-                    selectboxCreateNew: false
+                    selectboxCreateNew: false,
+                    filteredCheckbox: false,
+                    filteredFor: null
                 },
             ]
         },
@@ -50,21 +60,27 @@ export default async function MasterManageTeachers() {
                     label: 'username',
                     type: 'text',
                     data: null,
-                    selectboxCreateNew: false
+                    selectboxCreateNew: false,
+                    filteredCheckbox: false,
+                    filteredFor: null
                 },
                 {
                     id: "email",
                     label: "email",
                     type: 'email',
                     data: null,
-                    selectboxCreateNew: false
+                    selectboxCreateNew: false,
+                    filteredCheckbox: false,
+                    filteredFor: null
                 },
                 {
                     id: "password",
                     label: "password",
                     type: "password",
                     data: null,
-                    selectboxCreateNew: false
+                    selectboxCreateNew: false,
+                    filteredCheckbox: false,
+                    filteredFor: null
                 }
             ]
         }

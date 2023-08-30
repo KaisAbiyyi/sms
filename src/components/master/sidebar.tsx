@@ -34,7 +34,7 @@ export default function MasterSidebar() {
                         </div>
                         <CaretDownIcon size="18" />
                     </button>
-                    <div className={`${sidebarDropdown} ${showManage ? '!h-full' : ''}`}>
+                    <div className={`${sidebarDropdown} ${showManage ? '!h-full' : ''} `}>
                         <Link
                             href={'/master/manage/users'}
                             className={`${sidebarDropdownLink} ${router.startsWith('/master/manage/users') ? 'bg-slate-200' : ''}`}>

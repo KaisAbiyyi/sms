@@ -21,7 +21,7 @@ export default function MasterLayouts({
                 {loginPage &&
                     <MasterNavbar />
                 }
-                <div className={'flex-grow pb-8 pr-8 gap-8 flex flex-col overflow-y-scroll ' + scrollbarClass}>
+                <div className={'flex-grow pb-8 pr-8 gap-8 flex flex-col overflow-y-auto ' + scrollbarClass}>
                     {children}
                 </div>
             </div>

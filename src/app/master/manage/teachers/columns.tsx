@@ -7,6 +7,7 @@ import Link from "next/link"
 
 export type Teachers = {
     teacherNumber: string,
+    subjects: Array<object>,
     name: string,
     email: string,
     username: string,
@@ -40,6 +41,19 @@ export const columns: ColumnDef<Teachers>[] = [
         },
     },
     {
+        accessorKey: "username",
+        header: ({ column }) => {
+            return (
+                <button className="flex px-2 py-1 duration-200 ease-in rounded-lg hover:bg-slate-300"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Username
+                    <ArrowUpDown className="w-4 h-4 ml-2" />
+                </button>
+            )
+        },
+    },
+    {
         accessorKey: "email",
         header: ({ column }) => {
             return (
@@ -53,17 +67,24 @@ export const columns: ColumnDef<Teachers>[] = [
         },
     },
     {
-        accessorKey: "username",
+        accessorKey: "subjects",
         header: ({ column }) => {
             return (
                 <button className="flex px-2 py-1 duration-200 ease-in rounded-lg hover:bg-slate-300"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    Username
+                    Subject
                     <ArrowUpDown className="w-4 h-4 ml-2" />
                 </button>
             )
         },
+        cell: ({ row }) => {
+            return <div className="flex flex-wrap gap-2">
+                {row.original.subjects.map((item: any) => (
+                    <Link href={`/master/manage/classes/${item.name.toLowerCase().replaceAll(" ", "-")}`} key={item.id} className="p-1 px-2 text-sm font-bold text-center uppercase duration-200 ease-in rounded-lg bg-slate-200 text-slate-400 hover:bg-blue-500 hover:text-slate-100">{item.subjectName}</Link>
+                ))}
+            </div>
+        }
     },
     {
         header: "Action",

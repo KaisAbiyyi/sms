@@ -49,70 +49,7 @@ export const columns: ColumnDef<Department>[] = [
             )
         },
         cell: ({ row }) => {
-            const [editMode, setEditMode] = useState<boolean>(false)
-            const [rowValue, setRowValue] = useState<string>('')
-            const [value, setValue] = useState(row.getValue("fullName") as string)
-            const rowData = row.original
-
-            const editFullName = async (formData: FormData) => {
-                const fullName = formData.get("fullName")?.valueOf() as string
-
-                const req = await fetch("http://localhost:3000/api/master/departments/fullname", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id: rowData.id,
-                        fullName
-                    })
-                })
-
-                const res = await req.json()
-                if (!res.success) {
-                    console.log(res.message)
-                }
-
-                setValue(fullName)
-                setEditMode(false)
-                return
-            }
-
-            return (
-                <>
-                    {editMode ? (
-                        <form action={editFullName} className="w-full h-full">
-                            <input
-                                type="text"
-                                name="fullName"
-                                id="fullName"
-                                defaultValue={value}
-                                className="w-full h-full px-2 uppercase bg-slate-200"
-                                placeholder="Enter department fullname..." />
-                            {/* <div className="flex gap-2">
-                                <button
-                                    className="p-2 duration-200 ease-in bg-red-500 rounded-lg shadow text-slate-100 h-fit hover:bg-red-400"
-                                    onClick={() => setEditMode(false)}
-                                    title="Cancel"
-                                    type="button">
-                                    <CircleX size='18' />
-                                </button>
-                                <button
-                                    className="p-2 duration-200 ease-in bg-green-500 rounded-lg shadow text-slate-100 h-fit hover:bg-green-400"
-                                    type="submit"
-                                    title="Confirm">
-                                    <CheckIcon size="18" />
-                                </button>
-                            </div> */}
-                        </form>
-                    ) : (
-                        <div className="flex items-center w-full h-full gap-4 px-2" onClick={() => setEditMode(!editMode)}>
-                            <span className="uppercase">{value}</span>
-                        </div>
-                    )
-                    }
-                </>
-            )
+            return <span className="uppercase">{row.getValue('fullName')}</span>
         }
     },
     {
@@ -128,6 +65,7 @@ export const columns: ColumnDef<Department>[] = [
             )
         },
         cell: ({ row }) => {
+            console.log(row.original)
             return <div className="flex flex-wrap gap-2">
                 {row.original.classes.map((item: any) => (
                     <Link href={`/master/manage/classes/${item.name.toLowerCase().replaceAll(" ", "-")}`} key={item.id} className="p-1 px-2 text-sm font-bold text-center uppercase duration-200 ease-in rounded-lg bg-slate-200 text-slate-400 hover:bg-blue-500 hover:text-slate-100">{item.name}</Link>
