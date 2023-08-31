@@ -1,318 +1,21 @@
 "use client"
+import { useState } from "react";
 
-import { inputClass } from "@/components/ElementClass";
-import DiagramCard, { DiagramCardProps } from "@/components/diagram/DiagramCard";
-import TableCell from "@/components/tables/TableCell";
-
-interface dataTableTypes {
-    id: number,
-    name: string,
-    email: string,
-    address: string
+interface DataItem {
+    id: number;
+    name: string;
+    address: string;
+    email: string;
 }
 
-export default function DemoPage() {
-    const data: Array<DiagramCardProps> = [
-        {
-            "id": "main",
-            "name": "Kristin Mccoy",
-            "title": "Medical director",
-            "phone": "(405) 555-0128",
-            "mail": "kmccoy@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-01.jpg"
-        },
-        {
-            "id": "1",
-            "name": "Theo Fisher",
-            "title": "Head of department",
-            "phone": "(405) 632-1372",
-            "mail": "tfisher@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-02.jpg",
-            "parent": "main"
-        },
-        {
-            "id": "1.1",
-            "name": "Francesca Saunders",
-            "title": "Attending physician",
-            "phone": "(402) 371-6736",
-            "mail": "fsaunders@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-03.jpg",
-            "parent": "1",
-            "open": false
-        },
-        {
-            "id": "1.1.1",
-            "name": "Jenson Brown",
-            "title": "Fellow",
-            "phone": "(346) 622-8633",
-            "mail": "jbrown@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-14.jpg",
-            "parent": "1.1",
-        },
-        {
-            "id": "1.1.1.1",
-            "name": "Raya Marshall",
-            "title": "Resident",
-            "phone": "(846) 962-1723",
-            "mail": "rmarshall@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-16.jpg",
-            "parent": "1.1.1"
-        },
-        {
-            "id": "1.1.1.2",
-            "name": "Tom Walsh",
-            "title": "Resident",
-            "phone": "(763) 213-8373",
-            "mail": "twalsh@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-17.jpg",
-            "parent": "1.1.1"
-        },
-        {
-            "id": "1.1.1.3",
-            "name": "Harvey Pearce",
-            "title": "Resident",
-            "phone": "(364) 234-7523",
-            "mail": "hpearce@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-18.jpg",
-            "parent": "1.1.1"
-        },
-        {
-            "id": "1.1.2",
-            "name": "Archie Barnes",
-            "title": "Fellow",
-            "phone": "(578) 342-1237",
-            "mail": "abarnes@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-19.jpg",
-            "parent": "1.1",
-        },
-        {
-            "id": "1.1.2.1",
-            "name": "Emelia Green",
-            "title": "Resident",
-            "phone": "(832) 426-2223",
-            "mail": "egreen@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-20.jpg",
-            "parent": "1.1.2"
-        },
-        {
-            "id": "1.1.2.2",
-            "name": "Dylan Barrett",
-            "title": "Resident",
-            "phone": "(523) 125-2523",
-            "mail": "dbarrett@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-21.jpg",
-            "parent": "1.1.2"
-        },
-        {
-            "id": "1.1.3",
-            "name": "Abraham Johnston",
-            "title": "Fellow",
-            "phone": "(251) 315-4731",
-            "mail": "ajohnston@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-22.jpg",
-            "parent": "1.1",
-        },
-        {
-            "id": "1.1.3.1",
-            "name": "Philippa Holmes",
-            "title": "Resident",
-            "phone": "(151) 231-1256",
-            "mail": "pholmes@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-23.jpg",
-            "parent": "1.1.3"
-        },
-        {
-            "id": "1.1.3.2",
-            "name": "Claudia Fraser",
-            "title": "Resident",
-            "phone": "(125) 215-2636",
-            "mail": "cfraser@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-24.jpg",
-            "parent": "1.1.3"
-        },
-        {
-            "id": "2",
-            "name": "Alisha Hall",
-            "title": "Head of department",
-            "phone": "(405) 372-9756",
-            "mail": "ahall@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-04.jpg",
-            "parent": "main",
-        },
-        {
-            "id": "2.1",
-            "name": "Milena Hunter",
-            "title": "Attending physician",
-            "phone": "(124) 622-1256",
-            "mail": "mhunter@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-25.jpg",
-            "parent": "2",
-        },
-        {
-            "id": "2.1.1",
-            "name": "Bradley Sutton",
-            "title": "Fellow",
-            "phone": "(325) 154-6232",
-            "mail": "bsutton@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-26.jpg",
-            "parent": "2.1"
-        },
-        {
-            "id": "2.1.2",
-            "name": "Joel Stevens",
-            "title": "Fellow",
-            "phone": "(165) 463-1232",
-            "mail": "jstevens@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-27.jpg",
-            "parent": "2.1"
-        },
-        {
-            "id": "2.1.3",
-            "name": "Axel Khan",
-            "title": "Fellow",
-            "phone": "(578) 734-3633",
-            "mail": "akhan@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-28.jpg",
-            "parent": "2.1"
-        },
-        {
-            "id": "2.2",
-            "name": "Maximus Dixon",
-            "title": "Medical director",
-            "phone": "(264) 684-4373",
-            "mail": "mdixon@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-29.jpg",
-            "parent": "2",
-        },
-        {
-            "id": "2.2.1",
-            "name": "Sami Morris",
-            "title": "Fellow",
-            "phone": "(437) 347-3473",
-            "mail": "smorris@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-30.jpg",
-            "parent": "2.2"
-        },
-        {
-            "id": "2.2.2",
-            "name": "Jessica Murray",
-            "title": "Fellow",
-            "phone": "(436) 348-8692",
-            "mail": "jmurray@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-31.jpg",
-            "parent": "2.2"
-        },
-        {
-            "id": "2.2.3",
-            "name": "Maryam Barker",
-            "title": "Fellow",
-            "phone": "(632) 324-3262",
-            "mail": "mbarker@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-32.jpg",
-            "parent": "2.2"
-        },
-        {
-            "id": "3",
-            "name": "Edward Sharp",
-            "title": "Head of department",
-            "phone": "(451) 251-2578",
-            "mail": "esharp@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-06.jpg",
-            "parent": "main",
-        },
-        {
-            "id": "3.1",
-            "name": "Cruz Burke",
-            "title": "Attending physician",
-            "phone": "(587) 234-8975",
-            "mail": "cburke@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-07.jpg",
-            "parent": "3"
-        },
-        {
-            "id": "3.2",
-            "name": "Eloise Saunders",
-            "title": "Attending physician",
-            "phone": "(875) 231-5332",
-            "mail": "esaunders@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-08.jpg",
-            "parent": "3"
-        },
-        {
-            "id": "3.3",
-            "name": "Sophia Matthews",
-            "title": "Attending physician",
-            "phone": "(361) 423-7234",
-            "mail": "smatthews@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-09.jpg",
-            "parent": "3"
-        },
-        {
-            "id": "3.4",
-            "name": "Kara Foster",
-            "title": "Attending physician",
-            "phone": "(565) 525-0672",
-            "mail": "kfoster@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-10.jpg",
-            "parent": "3"
-        },
-        {
-            "id": "4",
-            "name": "Peter Cox",
-            "title": "Head of department",
-            "phone": "(732) 321-2312",
-            "mail": "pcox@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-11.jpg",
-            "parent": "main",
-        },
-        {
-            "id": "4.1",
-            "name": "Nancy Collins",
-            "title": "Attending physician",
-            "phone": "(743) 235-1263",
-            "mail": "ncollins@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-12.jpg",
-            "parent": "4",
-        },
-        {
-            "id": "4.1.1",
-            "name": "Alyssa Day",
-            "title": "Fellow",
-            "phone": "(623) 265-2362",
-            "mail": "aday@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-33.jpg",
-            "parent": "4.1"
-        },
-        {
-            "id": "4.1.2",
-            "name": "Nancy Newman",
-            "title": "Fellow",
-            "phone": "(347) 236-2373",
-            "mail": "nnewman@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-34.jpg",
-            "parent": "4.1"
-        },
-        {
-            "id": "4.2",
-            "name": "Honey Black",
-            "title": "Attending physician",
-            "phone": "(263) 234-8756",
-            "mail": "hblack@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-13.jpg",
-            "parent": "4"
-        },
-        {
-            "id": "4.3",
-            "name": "Archie Moore",
-            "title": "Attending physician",
-            "phone": "(705) 236-5742",
-            "mail": "amoore@gmail.com",
-            "photo": "https://snippet.dhtmlx.com/codebase/data/diagram/03/img/avatar-05.jpg",
-            "parent": "4"
-        }
-    ];
+const columnMappings: { [key: string]: keyof DataItem } = {
+    name: 'name',
+    address: 'address',
+    email: 'email'
+};
 
-    const rawData: Array<dataTableTypes> = [
+export default function DemoPage() {
+    const initialData: DataItem[] = [
         {
             id: 1,
             name: "John Doe",
@@ -375,29 +78,145 @@ export default function DemoPage() {
         }
     ];
 
-    const dataTable = rawData.slice().sort((a, b) => a.name.localeCompare(b.name))
+    const [data, setData] = useState<DataItem[]>(initialData);
+    const [sortAscending, setSortAscending] = useState<boolean>(true);
+    const [columnName, setColumnName] = useState<keyof DataItem>('name'); // Default sorting column
+    const [searchValue, setSearchValue] = useState<string>(''); // Search input value
+    const [editableCell, setEditableCell] = useState<{ rowId: number; column: keyof DataItem } | null>(null);
+    const [editedValue, setEditedValue] = useState<string>(''); // Edited cell value
 
+    const toggleSort = (column: keyof DataItem) => {
+        if (columnName === column) {
+            setSortAscending(!sortAscending);
+        } else {
+            setColumnName(column);
+            setSortAscending(true);
+        }
+    };
 
-    return (<>
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+    };
+
+    const handleCellDoubleClick = (rowId: number, column: keyof DataItem, value: string) => {
+        setEditableCell({ rowId, column });
+        setEditedValue(value);
+    };
+
+    const handleEditChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEditedValue(event.target.value);
+    };
+
+    const handleSaveEdit = () => {
+        if (editableCell) {
+            const { rowId, column } = editableCell;
+            const updatedData = data.map((item) =>
+                item.id === rowId ? { ...item, [column]: editedValue } : item
+            );
+            setData(updatedData);
+            setEditableCell(null);
+            console.log(`Row: ${rowId}, Column: ${column}, Value: ${editedValue}`);
+        }
+    };
+
+    const handleCellClick = (rowId: number, column: keyof DataItem, value: string) => {
+        // Check if the clicked cell is different from the editable cell
+        if (!(editableCell && editableCell.rowId === rowId && editableCell.column === columnMappings[column])) {
+            // Save the changes and exit edit mode if an editable cell is currently being edited
+            if (editableCell) {
+                handleSaveEdit();
+                setEditableCell(null);
+            }
+        }
+    };
+
+    const filteredData = data.filter(item =>
+        Object.values(item).some(value =>
+            typeof value === 'string' && value.toLowerCase().includes(searchValue.toLowerCase())
+        )
+    );
+
+    const sortedData = filteredData
+        .slice()
+        .sort((a, b) => {
+            const property = columnMappings[columnName];
+            const aValue = a[property] as string;
+            const bValue = b[property] as string;
+
+            if (sortAscending) {
+                return aValue.localeCompare(bValue);
+            } else {
+                return bValue.localeCompare(aValue);
+            }
+        });
+
+    const numColumns = Object.keys(columnMappings).length;
+
+    return (
         <div className="p-4 rounded-lg shadow-sm bg-slate-50">
+            <div className="flex justify-end">
+                <input
+                    type="text"
+                    id="searchTable"
+                    placeholder="Search"
+                    className="h-8 px-2 bg-white border-none rounded-lg shadow outline-none w-96"
+                    name="searchTable"
+                    value={searchValue}
+                    onChange={handleSearchChange}
+                />
+            </div>
             <table className="w-full">
                 <thead>
                     <tr>
-                        <th className="p-4 border text-start bg-slate-100">Name</th>
-                        <th className="p-4 border text-start bg-slate-100">Email</th>
-                        <th className="p-4 border text-start bg-slate-100">Address</th>
+                        {/* Render column headers */}
+                        {Object.keys(columnMappings).map((column) => (
+                            <th key={column} className="p-2 border text-start bg-slate-100">
+                                <button
+                                    className="px-2 py-1 capitalize duration-200 ease-in rounded-lg text-slate-500 hover:bg-slate-200"
+                                    onClick={() => toggleSort(columnMappings[column])}
+                                >
+                                    {columnMappings[column]} {columnName === columnMappings[column] && sortAscending ? '▲' : '▼'}
+                                </button>
+                            </th>
+                        ))}
                     </tr>
                 </thead>
                 <tbody>
-                    {dataTable.map((item) => (
-                        <tr key={item.id} className="hover:bg-slate-100">
-                            <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.email}</TableCell>
-                            <TableCell>{item.name}</TableCell>
+                    {/* Render data rows */}
+                    {sortedData.length !== 0 ? (
+                        sortedData.map((item) => (
+                            <tr key={item.id}>
+                                {Object.keys(columnMappings).map((column) => (
+                                    <td
+                                        key={column}
+                                        className={`border hover:bg-slate-100 h-14 `}
+                                        onDoubleClick={() => handleCellDoubleClick(item.id, columnMappings[column], item[columnMappings[column]] as string)}
+                                        onClick={() => handleCellClick(item.id, columnMappings[column], item[columnMappings[column]] as string)}
+                                    >
+                                        {editableCell && editableCell.rowId === item.id && editableCell.column === columnMappings[column] ? (
+                                            <input
+                                                type="text"
+                                                value={editedValue}
+                                                onChange={handleEditChange}
+                                                onBlur={handleSaveEdit}
+                                                className="w-full h-full px-4 bg-white rounded-lg shadow-lg outline-none"
+                                            />
+                                        ) : (
+                                            <div className="px-4">{item[columnMappings[column]]}</div>
+                                        )}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={numColumns} className="p-4 text-center border">
+                                No data found
+                            </td>
                         </tr>
-                    ))}
+                    )}
                 </tbody>
             </table>
         </div>
-    </>)
-}
+    );
+};

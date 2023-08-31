@@ -64,7 +64,7 @@ export const columns: ColumnDef<SubjectType>[] = [
                 <button className="flex px-2 py-1 duration-200 ease-in rounded-lg hover:bg-slate-300"
                     onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
                 >
-                    Classes
+                    Teacher
                     <ArrowUpDown className="w-4 h-4 ml-2" />
                 </button>
             )
