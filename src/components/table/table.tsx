@@ -53,6 +53,12 @@ export default function TableUI() {
     const [searchValue, setSearchValue] = useState<string>(''); // Search input value
     const [editableCell, setEditableCell] = useState<{ rowId: number; column: keyof DataItem } | null>(null);
     const [editedValue, setEditedValue] = useState<string>(''); // Edited cell value
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const itemsPerPage = 10;
+
+    const handleLoadMore = () => {
+        setCurrentPage(currentPage + 1);
+    };
 
     useEffect(() => {
         // Generate data using columnMappings
@@ -163,8 +169,7 @@ export default function TableUI() {
         }
     });
 
-
-    const numColumns = Object.keys(columnMappings).length;
+    const displayedData = sortedData.slice(0, currentPage * itemsPerPage);
 
     return (
         <div className="p-4 rounded-lg shadow-sm bg-slate-50">
@@ -178,7 +183,7 @@ export default function TableUI() {
                     name="searchTable"
                 />
             </div>
-            <table className="w-full">
+            <table className="w-full overflow-hidden rounded-lg">
                 <thead>
                     <tr>
                         {columnMappings.map((column) => (
@@ -194,8 +199,8 @@ export default function TableUI() {
                     </tr>
                 </thead>
                 <tbody>
-                    {sortedData.length !== 0 ? (
-                        sortedData.map((item) => (
+                    {displayedData.length !== 0 ? (
+                        displayedData.map((item) => (
                             <tr key={item.id}>
                                 {columnMappings.map((column) => (
                                     <td
@@ -240,6 +245,16 @@ export default function TableUI() {
                     )}
                 </tbody>
             </table>
+            {displayedData.length < sortedData.length && (
+                <div className="flex justify-center mt-4">
+                    <button
+                        className="px-4 py-2 font-bold duration-200 ease-in rounded-md text-slate-400 hover:bg-slate-100"
+                        onClick={handleLoadMore}
+                    >
+                        Load More
+                    </button>
+                </div>
+            )}
         </div>
     );
 };
