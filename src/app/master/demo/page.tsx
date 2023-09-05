@@ -9,370 +9,638 @@ const DynamicComponent = dynamic(() => import('@glideapps/glide-data-grid'), { s
 
 interface PersonType {
     id: number
+    username: string
+    hobby: string[]
     name: string
     address: string
     email: string
     birthdate: string
 }
 
-function generateRandomBirthdate() {
-    const year = Math.floor(Math.random() * (2002 - 1970 + 1)) + 1970;
-    const month = Math.floor(Math.random() * 12) + 1;
-    const day = Math.floor(Math.random() * 28) + 1; // Assuming all months have 28 days for simplicity
-    return `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-}
-
 export default function DemoPage() {
     const data: PersonType[] = [
         {
             "id": 1,
-            "name": "Person 1",
-            "email": "person1@example.com",
-            "birthdate": "1991-12-27",
-            "address": "1 Street, City 1, Country"
+            "username": "SmartPerson",
+            "name": "Hannah",
+            "email": "luckyuser@yahoo.com",
+            "birthdate": "1999-09-07",
+            "address": "Houston, USA",
+            "hobby": [
+                "Photography"
+            ]
         },
         {
             "id": 2,
-            "name": "Person 2",
-            "email": "person2@example.com",
-            "birthdate": "1994-09-08",
-            "address": "2 Street, City 2, Country"
+            "username": "LuckyPerson",
+            "name": "Bob",
+            "email": "sillychallenger@hotmail.com",
+            "birthdate": "1973-11-16",
+            "address": "Chicago, USA",
+            "hobby": [
+                "Traveling",
+                "Cooking"
+            ]
         },
         {
             "id": 3,
-            "name": "Person 3",
-            "email": "person3@example.com",
-            "birthdate": "1993-10-09",
-            "address": "3 Street, City 3, Country"
+            "username": "CoolTraveler",
+            "name": "George",
+            "email": "funnychallenger@yahoo.com",
+            "birthdate": "1989-07-22",
+            "address": "New York, USA",
+            "hobby": [
+                "Gaming"
+            ]
         },
         {
             "id": 4,
-            "name": "Person 4",
-            "email": "person4@example.com",
-            "birthdate": "2000-03-05",
-            "address": "4 Street, City 4, Country"
+            "username": "CoolPerson",
+            "name": "Fiona",
+            "email": "luckybuddy@outlook.com",
+            "birthdate": "1987-06-22",
+            "address": "Miami, USA",
+            "hobby": [
+                "Reading",
+                "Traveling"
+            ]
         },
         {
             "id": 5,
-            "name": "Person 5",
-            "email": "person5@example.com",
-            "birthdate": "1990-10-13",
-            "address": "5 Street, City 5, Country"
+            "username": "WittyExplorer",
+            "name": "Hannah",
+            "email": "sillyperson@hotmail.com",
+            "birthdate": "1986-07-11",
+            "address": "Miami, USA",
+            "hobby": [
+                "Photography",
+                "Swimming",
+                "Reading"
+            ]
         },
         {
             "id": 6,
-            "name": "Person 6",
-            "email": "person6@example.com",
-            "birthdate": "1983-04-28",
-            "address": "6 Street, City 1, Country"
+            "username": "FunnyUser",
+            "name": "Hannah",
+            "email": "luckyexplorer@outlook.com",
+            "birthdate": "1999-06-09",
+            "address": "Chicago, USA",
+            "hobby": [
+                "Swimming",
+                "Gaming",
+                "Traveling",
+                "Reading"
+            ]
         },
         {
             "id": 7,
-            "name": "Person 7",
-            "email": "person7@example.com",
-            "birthdate": "1987-06-19",
-            "address": "7 Street, City 2, Country"
+            "username": "SmartPerson",
+            "name": "Charlie",
+            "email": "cleverexplorer@hotmail.com",
+            "birthdate": "1994-01-06",
+            "address": "Houston, USA",
+            "hobby": [
+                "Cooking",
+                "Swimming",
+                "Reading",
+                "Photography"
+            ]
         },
         {
             "id": 8,
-            "name": "Person 8",
-            "email": "person8@example.com",
-            "birthdate": "2002-08-26",
-            "address": "8 Street, City 3, Country"
+            "username": "SmartPerson",
+            "name": "Charlie",
+            "email": "sillyuser@yahoo.com",
+            "birthdate": "1991-05-16",
+            "address": "Chicago, USA",
+            "hobby": [
+                "Gaming",
+                "Hiking",
+                "Reading",
+                "Traveling"
+            ]
         },
         {
             "id": 9,
-            "name": "Person 9",
-            "email": "person9@example.com",
-            "birthdate": "2001-04-11",
-            "address": "9 Street, City 4, Country"
+            "username": "SillyPerson",
+            "name": "David",
+            "email": "happyperson@gmail.com",
+            "birthdate": "1978-11-12",
+            "address": "New York, USA",
+            "hobby": [
+                "Swimming",
+                "Cooking"
+            ]
         },
         {
             "id": 10,
-            "name": "Person 10",
-            "email": "person10@example.com",
-            "birthdate": "1996-03-12",
-            "address": "10 Street, City 5, Country"
+            "username": "HappyChallenger",
+            "name": "George",
+            "email": "coolbuddy@outlook.com",
+            "birthdate": "1997-03-14",
+            "address": "San Francisco, USA",
+            "hobby": [
+                "Swimming",
+                "Hiking"
+            ]
         },
         {
             "id": 11,
-            "name": "Person 11",
-            "email": "person11@example.com",
-            "birthdate": "1980-10-09",
-            "address": "11 Street, City 1, Country"
+            "username": "HappyBuddy",
+            "name": "David",
+            "email": "luckyexplorer@outlook.com",
+            "birthdate": "1977-02-05",
+            "address": "Miami, USA",
+            "hobby": [
+                "Reading",
+                "Swimming",
+                "Traveling"
+            ]
         },
         {
             "id": 12,
-            "name": "Person 12",
-            "email": "person12@example.com",
-            "birthdate": "1984-07-13",
-            "address": "12 Street, City 2, Country"
+            "username": "CleverGamer",
+            "name": "Hannah",
+            "email": "wittygamer@hotmail.com",
+            "birthdate": "1983-07-27",
+            "address": "Los Angeles, USA",
+            "hobby": [
+                "Hiking",
+                "Swimming",
+                "Reading"
+            ]
         },
         {
             "id": 13,
-            "name": "Person 13",
-            "email": "person13@example.com",
-            "birthdate": "1976-09-13",
-            "address": "13 Street, City 3, Country"
+            "username": "LuckyChallenger",
+            "name": "George",
+            "email": "smartexplorer@yahoo.com",
+            "birthdate": "1992-10-08",
+            "address": "Los Angeles, USA",
+            "hobby": [
+                "Gaming",
+                "Cooking",
+                "Hiking"
+            ]
         },
         {
             "id": 14,
-            "name": "Person 14",
-            "email": "person14@example.com",
-            "birthdate": "1970-02-02",
-            "address": "14 Street, City 4, Country"
+            "username": "LuckyUser",
+            "name": "Hannah",
+            "email": "sillychallenger@yahoo.com",
+            "birthdate": "1983-06-23",
+            "address": "Miami, USA",
+            "hobby": [
+                "Photography",
+                "Reading",
+                "Hiking"
+            ]
         },
         {
             "id": 15,
-            "name": "Person 15",
-            "email": "person15@example.com",
-            "birthdate": "1992-10-12",
-            "address": "15 Street, City 5, Country"
+            "username": "WittyPerson",
+            "name": "George",
+            "email": "luckychallenger@outlook.com",
+            "birthdate": "1992-06-27",
+            "address": "New York, USA",
+            "hobby": [
+                "Hiking"
+            ]
         },
         {
             "id": 16,
-            "name": "Person 16",
-            "email": "person16@example.com",
-            "birthdate": "1972-09-09",
-            "address": "16 Street, City 1, Country"
+            "username": "CleverPerson",
+            "name": "Bob",
+            "email": "sillytraveler@gmail.com",
+            "birthdate": "1978-12-11",
+            "address": "Miami, USA",
+            "hobby": [
+                "Cooking",
+                "Reading",
+                "Hiking",
+                "Traveling"
+            ]
         },
         {
             "id": 17,
-            "name": "Person 17",
-            "email": "person17@example.com",
-            "birthdate": "1981-10-21",
-            "address": "17 Street, City 2, Country"
+            "username": "FunnyGamer",
+            "name": "George",
+            "email": "smartuser@gmail.com",
+            "birthdate": "1986-06-15",
+            "address": "New York, USA",
+            "hobby": [
+                "Cooking"
+            ]
         },
         {
             "id": 18,
-            "name": "Person 18",
-            "email": "person18@example.com",
-            "birthdate": "2000-07-10",
-            "address": "18 Street, City 3, Country"
+            "username": "SmartFriend",
+            "name": "Bob",
+            "email": "funnybuddy@hotmail.com",
+            "birthdate": "1973-05-13",
+            "address": "Houston, USA",
+            "hobby": [
+                "Gaming"
+            ]
         },
         {
             "id": 19,
-            "name": "Person 19",
-            "email": "person19@example.com",
-            "birthdate": "1981-11-13",
-            "address": "19 Street, City 4, Country"
+            "username": "CleverTraveler",
+            "name": "Alice",
+            "email": "wittybuddy@yahoo.com",
+            "birthdate": "1999-03-03",
+            "address": "Houston, USA",
+            "hobby": [
+                "Traveling",
+                "Gaming"
+            ]
         },
         {
             "id": 20,
-            "name": "Person 20",
-            "email": "person20@example.com",
-            "birthdate": "1977-02-11",
-            "address": "20 Street, City 5, Country"
+            "username": "CoolBuddy",
+            "name": "Bob",
+            "email": "coolfriend@yahoo.com",
+            "birthdate": "1999-05-23",
+            "address": "Miami, USA",
+            "hobby": [
+                "Swimming",
+                "Hiking"
+            ]
         },
         {
             "id": 21,
-            "name": "Person 21",
-            "email": "person21@example.com",
-            "birthdate": "1997-07-02",
-            "address": "21 Street, City 1, Country"
+            "username": "CoolUser",
+            "name": "Fiona",
+            "email": "luckytraveler@hotmail.com",
+            "birthdate": "1990-06-17",
+            "address": "New York, USA",
+            "hobby": [
+                "Reading",
+                "Traveling",
+                "Swimming"
+            ]
         },
         {
             "id": 22,
-            "name": "Person 22",
-            "email": "person22@example.com",
-            "birthdate": "1975-05-16",
-            "address": "22 Street, City 2, Country"
+            "username": "SillyBuddy",
+            "name": "David",
+            "email": "cooltraveler@yahoo.com",
+            "birthdate": "1995-07-03",
+            "address": "Houston, USA",
+            "hobby": [
+                "Cooking",
+                "Gaming",
+                "Hiking"
+            ]
         },
         {
             "id": 23,
-            "name": "Person 23",
-            "email": "person23@example.com",
-            "birthdate": "1976-10-08",
-            "address": "23 Street, City 3, Country"
+            "username": "SmartTraveler",
+            "name": "Hannah",
+            "email": "wittyperson@outlook.com",
+            "birthdate": "1998-10-26",
+            "address": "New York, USA",
+            "hobby": [
+                "Swimming",
+                "Hiking"
+            ]
         },
         {
             "id": 24,
-            "name": "Person 24",
-            "email": "person24@example.com",
-            "birthdate": "2002-05-05",
-            "address": "24 Street, City 4, Country"
+            "username": "CleverTraveler",
+            "name": "Eva",
+            "email": "happybuddy@outlook.com",
+            "birthdate": "1985-09-15",
+            "address": "San Francisco, USA",
+            "hobby": [
+                "Swimming",
+                "Traveling"
+            ]
         },
         {
             "id": 25,
-            "name": "Person 25",
-            "email": "person25@example.com",
-            "birthdate": "1987-01-23",
-            "address": "25 Street, City 5, Country"
+            "username": "HappyTraveler",
+            "name": "Eva",
+            "email": "cooltraveler@gmail.com",
+            "birthdate": "1989-06-17",
+            "address": "Miami, USA",
+            "hobby": [
+                "Traveling",
+                "Gaming",
+                "Cooking"
+            ]
         },
         {
             "id": 26,
-            "name": "Person 26",
-            "email": "person26@example.com",
-            "birthdate": "1983-08-07",
-            "address": "26 Street, City 1, Country"
+            "username": "FunnyExplorer",
+            "name": "David",
+            "email": "funnygamer@outlook.com",
+            "birthdate": "1971-03-12",
+            "address": "Chicago, USA",
+            "hobby": [
+                "Reading",
+                "Traveling",
+                "Gaming",
+                "Cooking"
+            ]
         },
         {
             "id": 27,
-            "name": "Person 27",
-            "email": "person27@example.com",
-            "birthdate": "1988-03-23",
-            "address": "27 Street, City 2, Country"
+            "username": "CoolExplorer",
+            "name": "Fiona",
+            "email": "coolperson@outlook.com",
+            "birthdate": "1981-05-13",
+            "address": "Miami, USA",
+            "hobby": [
+                "Hiking",
+                "Photography",
+                "Swimming"
+            ]
         },
         {
             "id": 28,
-            "name": "Person 28",
-            "email": "person28@example.com",
-            "birthdate": "1977-12-26",
-            "address": "28 Street, City 3, Country"
+            "username": "FunnyFriend",
+            "name": "Alice",
+            "email": "sillyfriend@hotmail.com",
+            "birthdate": "1976-11-03",
+            "address": "Houston, USA",
+            "hobby": [
+                "Hiking"
+            ]
         },
         {
             "id": 29,
-            "name": "Person 29",
-            "email": "person29@example.com",
-            "birthdate": "1999-05-06",
-            "address": "29 Street, City 4, Country"
+            "username": "FunnyUser",
+            "name": "Charlie",
+            "email": "funnyperson@yahoo.com",
+            "birthdate": "1980-10-23",
+            "address": "Chicago, USA",
+            "hobby": [
+                "Hiking",
+                "Traveling",
+                "Photography"
+            ]
         },
         {
             "id": 30,
-            "name": "Person 30",
-            "email": "person30@example.com",
-            "birthdate": "1998-02-19",
-            "address": "30 Street, City 5, Country"
+            "username": "SillyBuddy",
+            "name": "Bob",
+            "email": "cooluser@gmail.com",
+            "birthdate": "1993-07-27",
+            "address": "Miami, USA",
+            "hobby": [
+                "Swimming",
+                "Photography"
+            ]
         },
         {
             "id": 31,
-            "name": "Person 31",
-            "email": "person31@example.com",
-            "birthdate": "1981-08-07",
-            "address": "31 Street, City 1, Country"
+            "username": "SillyGamer",
+            "name": "Hannah",
+            "email": "coolbuddy@outlook.com",
+            "birthdate": "1992-11-08",
+            "address": "Miami, USA",
+            "hobby": [
+                "Cooking",
+                "Traveling",
+                "Gaming",
+                "Hiking"
+            ]
         },
         {
             "id": 32,
-            "name": "Person 32",
-            "email": "person32@example.com",
-            "birthdate": "1971-03-11",
-            "address": "32 Street, City 2, Country"
+            "username": "LuckyUser",
+            "name": "Fiona",
+            "email": "wittyfriend@gmail.com",
+            "birthdate": "1976-06-26",
+            "address": "San Francisco, USA",
+            "hobby": [
+                "Swimming",
+                "Traveling"
+            ]
         },
         {
             "id": 33,
-            "name": "Person 33",
-            "email": "person33@example.com",
-            "birthdate": "1993-09-22",
-            "address": "33 Street, City 3, Country"
+            "username": "SillyUser",
+            "name": "Fiona",
+            "email": "cleverbuddy@hotmail.com",
+            "birthdate": "1998-05-03",
+            "address": "New York, USA",
+            "hobby": [
+                "Photography",
+                "Traveling",
+                "Reading",
+                "Gaming"
+            ]
         },
         {
             "id": 34,
-            "name": "Person 34",
-            "email": "person34@example.com",
-            "birthdate": "1988-07-19",
-            "address": "34 Street, City 4, Country"
+            "username": "HappyPerson",
+            "name": "George",
+            "email": "luckychallenger@gmail.com",
+            "birthdate": "1984-12-13",
+            "address": "San Francisco, USA",
+            "hobby": [
+                "Hiking",
+                "Cooking"
+            ]
         },
         {
             "id": 35,
-            "name": "Person 35",
-            "email": "person35@example.com",
-            "birthdate": "1973-02-24",
-            "address": "35 Street, City 5, Country"
+            "username": "HappyExplorer",
+            "name": "David",
+            "email": "cleverexplorer@outlook.com",
+            "birthdate": "1992-03-24",
+            "address": "Los Angeles, USA",
+            "hobby": [
+                "Traveling"
+            ]
         },
         {
             "id": 36,
-            "name": "Person 36",
-            "email": "person36@example.com",
-            "birthdate": "1998-06-16",
-            "address": "36 Street, City 1, Country"
+            "username": "HappyUser",
+            "name": "David",
+            "email": "happygamer@gmail.com",
+            "birthdate": "1997-04-14",
+            "address": "Miami, USA",
+            "hobby": [
+                "Cooking",
+                "Photography",
+                "Swimming"
+            ]
         },
         {
             "id": 37,
-            "name": "Person 37",
-            "email": "person37@example.com",
-            "birthdate": "1992-04-15",
-            "address": "37 Street, City 2, Country"
+            "username": "FunnyBuddy",
+            "name": "David",
+            "email": "smartgamer@hotmail.com",
+            "birthdate": "1973-08-27",
+            "address": "Miami, USA",
+            "hobby": [
+                "Hiking"
+            ]
         },
         {
             "id": 38,
-            "name": "Person 38",
-            "email": "person38@example.com",
-            "birthdate": "1977-09-10",
-            "address": "38 Street, City 3, Country"
+            "username": "CleverFriend",
+            "name": "George",
+            "email": "luckybuddy@gmail.com",
+            "birthdate": "1976-08-22",
+            "address": "Miami, USA",
+            "hobby": [
+                "Traveling",
+                "Reading",
+                "Photography"
+            ]
         },
         {
             "id": 39,
-            "name": "Person 39",
-            "email": "person39@example.com",
-            "birthdate": "1988-10-19",
-            "address": "39 Street, City 4, Country"
+            "username": "WittyGamer",
+            "name": "Bob",
+            "email": "happychallenger@outlook.com",
+            "birthdate": "1994-08-28",
+            "address": "Miami, USA",
+            "hobby": [
+                "Swimming",
+                "Hiking"
+            ]
         },
         {
             "id": 40,
-            "name": "Person 40",
-            "email": "person40@example.com",
-            "birthdate": "1990-02-03",
-            "address": "40 Street, City 5, Country"
+            "username": "SmartGamer",
+            "name": "George",
+            "email": "sillyexplorer@gmail.com",
+            "birthdate": "1980-12-18",
+            "address": "Miami, USA",
+            "hobby": [
+                "Cooking",
+                "Gaming"
+            ]
         },
         {
             "id": 41,
-            "name": "Person 41",
-            "email": "person41@example.com",
-            "birthdate": "1975-08-03",
-            "address": "41 Street, City 1, Country"
+            "username": "SmartPerson",
+            "name": "Eva",
+            "email": "sillygamer@hotmail.com",
+            "birthdate": "1998-01-04",
+            "address": "Los Angeles, USA",
+            "hobby": [
+                "Gaming",
+                "Photography",
+                "Hiking"
+            ]
         },
         {
             "id": 42,
-            "name": "Person 42",
-            "email": "person42@example.com",
-            "birthdate": "1979-12-10",
-            "address": "42 Street, City 2, Country"
+            "username": "CleverTraveler",
+            "name": "Alice",
+            "email": "luckyuser@hotmail.com",
+            "birthdate": "1972-03-12",
+            "address": "New York, USA",
+            "hobby": [
+                "Gaming",
+                "Photography",
+                "Reading"
+            ]
         },
         {
             "id": 43,
-            "name": "Person 43",
-            "email": "person43@example.com",
-            "birthdate": "2001-10-07",
-            "address": "43 Street, City 3, Country"
+            "username": "SillyExplorer",
+            "name": "Alice",
+            "email": "smartuser@gmail.com",
+            "birthdate": "1980-02-18",
+            "address": "Chicago, USA",
+            "hobby": [
+                "Swimming",
+                "Cooking",
+                "Hiking"
+            ]
         },
         {
             "id": 44,
-            "name": "Person 44",
-            "email": "person44@example.com",
-            "birthdate": "1998-10-12",
-            "address": "44 Street, City 4, Country"
+            "username": "WittyPerson",
+            "name": "Hannah",
+            "email": "wittyuser@yahoo.com",
+            "birthdate": "1976-04-08",
+            "address": "Houston, USA",
+            "hobby": [
+                "Photography",
+                "Traveling",
+                "Gaming"
+            ]
         },
         {
             "id": 45,
-            "name": "Person 45",
-            "email": "person45@example.com",
-            "birthdate": "1978-05-21",
-            "address": "45 Street, City 5, Country"
+            "username": "WittyExplorer",
+            "name": "David",
+            "email": "cleverbuddy@gmail.com",
+            "birthdate": "1986-09-21",
+            "address": "San Francisco, USA",
+            "hobby": [
+                "Hiking",
+                "Gaming",
+                "Reading"
+            ]
         },
         {
             "id": 46,
-            "name": "Person 46",
-            "email": "person46@example.com",
-            "birthdate": "1988-11-23",
-            "address": "46 Street, City 1, Country"
+            "username": "SillyGamer",
+            "name": "David",
+            "email": "smartgamer@gmail.com",
+            "birthdate": "1998-02-14",
+            "address": "San Francisco, USA",
+            "hobby": [
+                "Photography",
+                "Gaming"
+            ]
         },
         {
             "id": 47,
-            "name": "Person 47",
-            "email": "person47@example.com",
-            "birthdate": "1989-04-23",
-            "address": "47 Street, City 2, Country"
+            "username": "SmartChallenger",
+            "name": "Alice",
+            "email": "funnyexplorer@yahoo.com",
+            "birthdate": "1996-01-18",
+            "address": "Chicago, USA",
+            "hobby": [
+                "Photography"
+            ]
         },
         {
             "id": 48,
-            "name": "Person 48",
-            "email": "person48@example.com",
-            "birthdate": "1975-02-25",
-            "address": "48 Street, City 3, Country"
+            "username": "CoolBuddy",
+            "name": "Charlie",
+            "email": "happyexplorer@yahoo.com",
+            "birthdate": "1995-11-15",
+            "address": "Chicago, USA",
+            "hobby": [
+                "Photography",
+                "Hiking",
+                "Cooking"
+            ]
         },
         {
             "id": 49,
-            "name": "Person 49",
-            "email": "person49@example.com",
-            "birthdate": "1971-03-02",
-            "address": "49 Street, City 4, Country"
+            "username": "WittyUser",
+            "name": "David",
+            "email": "smartuser@gmail.com",
+            "birthdate": "1982-11-20",
+            "address": "New York, USA",
+            "hobby": [
+                "Photography",
+                "Gaming",
+                "Swimming"
+            ]
         },
         {
             "id": 50,
-            "name": "Person 50",
-            "email": "person50@example.com",
-            "birthdate": "1975-01-12",
-            "address": "50 Street, City 5, Country"
+            "username": "LuckyTraveler",
+            "name": "Eva",
+            "email": "funnytraveler@yahoo.com",
+            "birthdate": "1980-10-05",
+            "address": "New York, USA",
+            "hobby": [
+                "Reading"
+            ]
         }
     ]
 
@@ -393,14 +661,25 @@ export default function DemoPage() {
             title: 'Address',
             id: 'address'
         },
+        {
+            title: "Hobby",
+            id: 'hobby'
+        }
     ]
 
     const getContent = useCallback((cell: Item): GridCell => {
         const [col, row] = cell;
         const dataRow = data[row];
         // dumb but simple way to do this
-        const indexes: (keyof PersonType)[] = ['name', 'email', 'birthdate', 'address'];
+        const indexes: (keyof PersonType)[] = ['name', 'email', 'birthdate', 'address', 'hobby'];
         const d = dataRow[indexes[col]]
+        if (col === indexes.indexOf('hobby')) {
+            return {
+                kind: GridCellKind.Bubble,
+                allowOverlay: false,
+                data: d as string[],
+            }
+        }
         return {
             kind: GridCellKind.Text,
             allowOverlay: true,
@@ -423,7 +702,9 @@ export default function DemoPage() {
 
 
     return (<>
-        <DynamicComponent getCellContent={getContent} columns={columns} onCellEdited={onCellEdited} rows={data.length} />;
-        <div id="portal"></div>
+        <div className="flex flex-col">
+            <DynamicComponent width={'fill'} getCellContent={getContent} getCellsForSelection columns={columns} onCellEdited={onCellEdited} rows={data.length} />
+            <div id="portal"></div>
+        </div>
     </>)
 };
