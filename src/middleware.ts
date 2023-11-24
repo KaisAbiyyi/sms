@@ -1,9 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-
-type AuthType = {
-    success: boolean,
-}
-
 export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const smsSession = request.cookies.get('sms-session')?.value

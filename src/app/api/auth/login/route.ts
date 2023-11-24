@@ -8,7 +8,7 @@ import { cookies } from 'next/headers'
 export async function POST(request: Request) {
     try {
         const { email, password, rememberMe } = await request.json();
-        if (email.trim() === '' || password.trim() === '') {
+        if (email.trim() === '' || password.trim() === '') {    
             const errResponse = []
             if (email.trim() === '') {
                 errResponse.push({

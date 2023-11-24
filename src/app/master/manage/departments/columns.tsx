@@ -10,13 +10,7 @@ import { ArrowUpDown } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 
-export type Department = {
-    id: string
-    name: string
-    fullName: string
-    students: number
-    classes: {}[]
-}
+
 
 export const columns: ColumnDef<Department>[] = [
     {
